@@ -34,6 +34,7 @@ public class main1 implements MouseListener {
 
     public main1() throws IOException
     {
+      Screens menus = new Screens(0);
       JFrame frame = new JFrame("Jeff Bezos' adventure time");
       frame.setSize(1280,960);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,6 +53,7 @@ public class main1 implements MouseListener {
     public void mouseClicked (MouseEvent e) {
         if (e.getX() > 268 && e.getY() > 145 && e.getX() < 745 && e.getY() < 425)
             new Game();
+            new Screens(1);
    }
     public void mousePressed (MouseEvent e) {}
     public void mouseReleased (MouseEvent e) {}
