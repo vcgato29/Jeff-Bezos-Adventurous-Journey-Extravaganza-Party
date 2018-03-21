@@ -50,9 +50,8 @@ public class main1 implements MouseListener {
     }
     
     public void mouseClicked (MouseEvent e) {
-      System.out.println(e.getX());
-      System.out.println(e.getY());
-      draw.repaint();
+        if (e.getX() > 268 && e.getY() > 145 && e.getX() < 745 && e.getY() < 425)
+            new Game();
    }
     public void mousePressed (MouseEvent e) {}
     public void mouseReleased (MouseEvent e) {}
