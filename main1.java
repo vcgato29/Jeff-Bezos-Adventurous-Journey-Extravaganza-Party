@@ -12,31 +12,52 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import java.awt.event.*;
+
 
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-public class main1 {
-
-    public static void main(String avg[]) throws IOException
+public class main1 implements MouseListener {
+   int gamestate = 1;
+   int x;
+   int y;
+   BufferedImage img=ImageIO.read(new File("images/title.png"));
+   Drawing draw = new Drawing();
+   
+    public static void main(String[] args) throws IOException
     {
-        main1 abc=new main1();
+         new main1();
     }
 
     public main1() throws IOException
     {
-        BufferedImage img=ImageIO.read(new File("images/title.png"));
-        ImageIcon icon=new ImageIcon(img);
-        JFrame frame=new JFrame();
-        frame.setLayout(new FlowLayout());
-        frame.setSize(1280,960);
-        JLabel lbl=new JLabel();
-        lbl.setIcon(icon);
-        frame.add(lbl);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      JFrame frame = new JFrame("Jeff Bezos' adventure time");
+      frame.setSize(1280,960);
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      draw.addMouseListener(this);
+      frame.add(draw);
+      frame.setVisible(true);
     }
+    class Drawing extends JComponent {
+      public void paint(Graphics g){
+         g.drawImage(img,0,0,null);
+        
+         
+      }
+    }
+    
+    public void mouseClicked (MouseEvent e) {
+      System.out.println(e.getX());
+      System.out.println(e.getY());
+      draw.repaint();
+   }
+    public void mousePressed (MouseEvent e) {}
+    public void mouseReleased (MouseEvent e) {}
+    public void mouseEntered (MouseEvent e) {}
+    public void mouseExited (MouseEvent e) {}
+      
 }
 
