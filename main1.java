@@ -20,45 +20,20 @@ import java.awt.event.*;
  * and open the template in the editor.
  */
 
-public class main1 implements MouseListener {
+public class main1
+{
    int gamestate = 1;
    int x;
    int y;
-   BufferedImage img=ImageIO.read(new File("images/title.png"));
-   Drawing draw = new Drawing();
-   
-    public static void main(String[] args) throws IOException
-    {
-         new main1();
-    }
-
-    public main1() throws IOException
-    {
-      Screens menus = new Screens(0);
-      JFrame frame = new JFrame("Jeff Bezos' adventure time");
-      frame.setSize(1280,960);
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      draw.addMouseListener(this);
-      frame.add(draw);
-      frame.setVisible(true);
-    }
-    class Drawing extends JComponent {
-      public void paint(Graphics g){
-         g.drawImage(img,0,0,null);
-        
          
-      }
-    }
-    
-    public void mouseClicked (MouseEvent e) {
-        if (e.getX() > 268 && e.getY() > 145 && e.getX() < 745 && e.getY() < 425)
-            new Game();
-            new Screens(1);
+   public static void main(String[] args) throws IOException
+   {
+      new main1();
    }
-    public void mousePressed (MouseEvent e) {}
-    public void mouseReleased (MouseEvent e) {}
-    public void mouseEntered (MouseEvent e) {}
-    public void mouseExited (MouseEvent e) {}
-      
-}
 
+   public main1() throws IOException
+   {
+      Screens menus = new Screens(0);
+      menus.display();
+   }
+}

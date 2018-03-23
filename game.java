@@ -15,10 +15,31 @@ import javax.swing.JLabel;
 import java.awt.event.*;
 
 
-public class Game {
-   public Game() {
+public class game 
+{
+   Drawing draw = new Drawing();
+   public game() 
+   {
       JFrame frame = new JFrame("Jeff Bezos' adventure time");
       frame.setSize(1280,960);
-      
-      
+      frame.add(draw);
+      frame.setVisible(true);
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+   } 
+   
+   public static void main(String[] args) 
+   {
+      new game();
+   }
+    
+   public class Drawing extends JComponent 
+   {
+      public void paint(Graphics g) 
+      {
+         g.setColor(Color.BLUE);
+         g.drawLine(0,400,1280,400);
+         g.drawRect(640,370,30,30);
+      } 
+    }  
+}   
    
