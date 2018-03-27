@@ -41,10 +41,16 @@ public class Screens implements MouseListener
          JFrame frame = new JFrame("Jeff Bezos' adventure time");
          frame.setSize(1280,960);
          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         draw.addMouseListener(this);
+         frame.setResizable(false);
+         frame.addMouseListener(this);
          frame.add(draw);
          frame.setVisible(true);
 
+      }
+      
+      if(screenChoice == 1)
+      {
+         game Play = new game();
       }
    }
  
@@ -56,6 +62,16 @@ public class Screens implements MouseListener
    }
    public void mouseReleased(MouseEvent e)
    {
+      int x = e.getX();
+      int y = e.getY();
+      if((x > 200 && x < 300) && screenChoice == 0)
+      {
+         if(y > 200 && y < 300)
+         {
+            screenChoice = 1;
+            System.out.println("Shes in");
+         }
+      }
    }
    public void mouseEntered(MouseEvent e)
    {
