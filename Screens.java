@@ -21,6 +21,14 @@ public class Screens implements MouseListener
    public Screens(int choice)
    {
       screenChoice = choice;
+      Drawing draw = new Drawing();
+      JFrame frame = new JFrame("Jeff Bezos' adventure time");
+      frame.setSize(1280,960);
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      frame.setResizable(false);
+      frame.addMouseListener(this);
+      frame.add(draw);
+      frame.setVisible(true);
    }
    
    public void changeScreen(int newScreen)
@@ -37,20 +45,13 @@ public class Screens implements MouseListener
    {
       if(screenChoice == 0)
       {
-         Drawing draw = new Drawing();
-         JFrame frame = new JFrame("Jeff Bezos' adventure time");
-         frame.setSize(1280,960);
-         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         frame.setResizable(false);
-         frame.addMouseListener(this);
-         frame.add(draw);
-         frame.setVisible(true);
-
+         System.out.println("yyet");
       }
       
       if(screenChoice == 1)
       {
-         game Play = new game();
+         new game();
+         System.out.println("doing stuff");
       }
    }
  

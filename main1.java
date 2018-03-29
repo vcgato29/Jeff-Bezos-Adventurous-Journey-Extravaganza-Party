@@ -33,7 +33,11 @@ public class main1
 
    public main1() throws IOException
    {
+      boolean playing = true;
       Screens menus = new Screens(0);
-      menus.display();
+//      while(playing)
+      {
+         menus.display();
+      }
    }
 }
