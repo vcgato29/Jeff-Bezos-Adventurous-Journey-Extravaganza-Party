@@ -63,6 +63,7 @@ public class Screens implements MouseListener
    }
    public void mouseReleased(MouseEvent e)
    {
+      this.display();
       int x = e.getX();
       int y = e.getY();
       if((x > 200 && x < 300) && screenChoice == 0)
