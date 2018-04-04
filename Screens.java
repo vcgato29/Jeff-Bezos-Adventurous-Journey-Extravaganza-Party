@@ -16,19 +16,21 @@ import java.awt.event.*;
 
 public class Screens implements MouseListener
 {
-   int screenChoice;
+   public static int screenChoice;
+   public static JFrame frame;
    
    public Screens(int choice)
    {
       screenChoice = choice;
       Drawing draw = new Drawing();
-      JFrame frame = new JFrame("Jeff Bezos' adventure time");
+      frame = new JFrame("Jeff Bezos' adventure time");
       frame.setSize(1280,960);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.setResizable(false);
       frame.addMouseListener(this);
       frame.add(draw);
       frame.setVisible(true);
+      
    }
    
    public void changeScreen(int newScreen)
@@ -89,8 +91,10 @@ class Drawing extends JComponent
    {
       try   
       {
+         if (Screens.screenChoice != 1) {
          BufferedImage img=ImageIO.read(new File("images/title.png"));
          g.drawImage(img,0,0,null);  
+         }
       }   
       catch(IOException e) 
       {

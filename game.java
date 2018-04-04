@@ -15,16 +15,17 @@ import javax.swing.JLabel;
 import java.awt.event.*;
 
 
-public class game 
+public class game
 {
    Drawing draw = new Drawing();
-   public game() 
+   public game()
    {
-      JFrame frame = new JFrame("Jeff Bezos' adventure time");
-      frame.setSize(1280,960);
-      frame.add(draw);
-      frame.setVisible(true);
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+      Screens.frame.setSize(1280,960);
+      Screens.frame.add(draw);
+      Screens.frame.setVisible(true);
+      Screens.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
    } 
    
    public static void main(String[] args) 

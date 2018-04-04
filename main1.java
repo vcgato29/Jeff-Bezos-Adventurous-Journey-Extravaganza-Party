@@ -35,9 +35,5 @@ public class main1
    {
       boolean playing = true;
       Screens menus = new Screens(0);
-//      while(playing)
-      {
-         menus.display();
-      }
    }
 }
