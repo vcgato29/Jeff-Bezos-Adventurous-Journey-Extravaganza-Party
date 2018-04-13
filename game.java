@@ -17,6 +17,9 @@ import java.awt.event.*;
 
 public class game
 {
+
+   int x = 640;
+   int y = 370;
    Drawing draw = new Drawing();
    public game()
    {
@@ -28,6 +31,21 @@ public class game
 
    } 
    
+   public long time() {
+      long time = System.currentTimeMillis()/1000L;
+      return time;
+   }
+   
+   public long elapsed(long start, long finish) {
+      return start - finish;
+   }
+   
+   public void jump() {
+      int start = y;
+      long start = System.currentTimeMillis()/1000L;
+      y = 1/2(-9.8)*(elapsed(start,time()))**2+ 
+      
+   
    public static void main(String[] args) 
    {
       new game();
@@ -37,9 +55,10 @@ public class game
    {
       public void paint(Graphics g) 
       {
+        
          g.setColor(Color.BLUE);
          g.drawLine(0,400,1280,400);
-         g.drawRect(640,370,30,30);
+         g.drawRect(x,y,30,30);
       } 
     }  
 }   
