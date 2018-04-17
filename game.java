@@ -40,10 +40,10 @@ public class game
       return start - finish;
    }
    
-   public void jump() {
-      int start = y;
-      long start = System.currentTimeMillis()/1000L;
-      y = 1/2(-9.8)*(elapsed(start,time()))**2+ 
+ //  public void jump() {
+ //     int start = y;
+ //     long start = System.currentTimeMillis()/1000L;
+  //    y = 1/2(-9.8)*(elapsed(start,time()))**2+ 
       
    
    public static void main(String[] args) 

@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.event.*;
+import java.awt.MouseInfo;
 
 public class Screens implements MouseListener
 {
@@ -29,6 +30,8 @@ public class Screens implements MouseListener
       frame.setResizable(false);
       frame.addMouseListener(this);
       frame.add(draw);
+      frame.toFront();
+      frame.requestFocus();
       frame.setVisible(true);
       
    }
@@ -91,9 +94,27 @@ class Drawing extends JComponent
    {
       try   
       {
-         if (Screens.screenChoice != 1) {
-         BufferedImage img=ImageIO.read(new File("images/title.png"));
-         g.drawImage(img,0,0,null);  
+         int mouseX = MouseInfo.getPointerInfo().getLocation().x;
+         int mouseY = MouseInfo.getPointerInfo().getLocation().y;
+         System.out.println(mouseX);
+         if (Screens.screenChoice != 1) 
+         {
+            BufferedImage img=ImageIO.read(new File("images/title.png"));
+            g.drawImage(img,0,0,null); 
+            if(mouseX >= 200 && mouseX < 300)
+            {
+               if(mouseY >= 200 && mouseY < 300)
+               {
+               System.out.println("yellowoowowow");
+                  g.setColor(Color.YELLOW);
+                  g.drawRect(200,200,100,100);
+               }
+            }else
+            {
+            System.out.println("blackock");
+               g.setColor(Color.BLACK);
+               g.drawRect(200,200,100,100);
+            }
          }
       }   
       catch(IOException e) 
