@@ -112,8 +112,8 @@ class Drawing extends JComponent
             }else
             {
             System.out.println("black");
-               g.setColor(Color.BLACK);
-               g.drawRect(200,200,100,100);
+               g.setColor(Color.RED);
+               g.drawRect(130,280,460,150);
             }
          }
       }   
