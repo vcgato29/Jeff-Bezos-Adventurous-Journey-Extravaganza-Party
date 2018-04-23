@@ -13,13 +13,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.event.*;
+import java.util.concurrent.TimeUnit;
 
 
 public class game
 {
 
-   int x = 640;
-   int y = 370;
+   long x = 640;
+   long y = 370;
    Drawing draw = new Drawing();
    public game()
    {
@@ -36,15 +37,21 @@ public class game
       return time;
    }
    
-   public long elapsed(long start, long finish) {
-      return start - finish;
+   public long elapsed(long strt, long finish) {
+      return finish - strt;
    }
    
    public void jump() {
-      int start = y;
-      long start = System.currentTimeMillis()/1000L;
-      y = 1/2(-9.8)*(elapsed(start,time()))**2+ 
-      
+      long start = y;
+      long sleeptime = 50L;
+      long begin = System.currentTimeMillis()/1000L;
+      y = 15*elapsed(begin,time()) - 5*elapsed(begin,time())*elapsed(begin,time()); 
+      while (start != y) {
+         TimeUnit.MILLIS.sleep(sleeptime);
+         y = 15*elapsed(begin,time()) - 5*elapsed(begin,time())*elapsed(begin,time()); 
+      }
+   }
+         
    
    public static void main(String[] args) 
    {
@@ -58,7 +65,8 @@ public class game
         
          g.setColor(Color.BLUE);
          g.drawLine(0,400,1280,400);
-         g.drawRect(x,y,30,30);
+         g.drawRect((int)x,(int)y,30,30);
+         jump();
       } 
     }  
 }   
