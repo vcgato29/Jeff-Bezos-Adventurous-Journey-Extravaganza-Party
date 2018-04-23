@@ -50,7 +50,7 @@ public class Screens implements MouseListener
    {
       if(screenChoice == 0)
       {
-         System.out.println("yyet");
+         System.out.println("menu");
       }
       
       if(screenChoice == 1)
@@ -76,7 +76,7 @@ public class Screens implements MouseListener
          if(y > 200 && y < 300)
          {
             screenChoice = 1;
-            System.out.println("Shes in");
+            System.out.println("its poppin");
          }
       }
    }
@@ -111,7 +111,7 @@ class Drawing extends JComponent
                }
             }else
             {
-            System.out.println("blackock");
+            System.out.println("black");
                g.setColor(Color.BLACK);
                g.drawRect(200,200,100,100);
             }
