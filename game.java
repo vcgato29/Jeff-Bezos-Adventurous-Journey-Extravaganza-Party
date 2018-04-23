@@ -41,6 +41,7 @@ public class game
       return finish - strt;
    }
    
+<<<<<<< HEAD
    public void jump() {
       long start = y;
       long sleeptime = 50L;
@@ -52,6 +53,13 @@ public class game
       }
    }
          
+=======
+ //  public void jump() {
+ //     int start = y;
+ //     long start = System.currentTimeMillis()/1000L;
+  //    y = 1/2(-9.8)*(elapsed(start,time()))**2+ 
+      
+>>>>>>> 7b8cb857986a5fa21479db05653b88b28e17cfa8
    
    public static void main(String[] args) 
    {
