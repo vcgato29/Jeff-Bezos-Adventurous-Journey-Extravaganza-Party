@@ -99,7 +99,7 @@ class Drawing extends JComponent
          System.out.println(mouseX);
          if (Screens.screenChoice != 1) 
          {
-            BufferedImage img=ImageIO.read(new File("images/title.png"));
+            BufferedImage img=ImageIO.read(new File("images/Title Screenz.png"));
             g.drawImage(img,0,0,null); 
             if(mouseX >= 200 && mouseX < 300)
             {
