@@ -76,6 +76,7 @@ public class Screens implements MouseListener
          if(y > 280 && y < 430)
          {
             screenChoice = 1;
+            System.out.println("Choice: " + screenChoice);
             this.display();
             System.out.println("its poppin");
          }
@@ -99,7 +100,7 @@ class Drawing extends JComponent
          int mouseY = MouseInfo.getPointerInfo().getLocation().y;
          System.out.println("X " + mouseX);
          System.out.println("Y " + mouseY);
-         if (Screens.screenChoice == 1) 
+         if (Screens.screenChoice == 0) 
          {
             BufferedImage img=ImageIO.read(new File("images/Title Screenz.png"));
             g.drawImage(img,0,0,null); 
