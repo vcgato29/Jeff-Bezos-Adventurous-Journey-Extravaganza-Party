@@ -49,7 +49,8 @@ public class Screens implements MouseListener
    public void display()
    {
       if(screenChoice == 0)
-      {
+      {  
+         frame.repaint();
          System.out.println("menu");
       }
       
@@ -68,14 +69,14 @@ public class Screens implements MouseListener
    }
    public void mouseReleased(MouseEvent e)
    {
-      this.display();
       int x = e.getX();
       int y = e.getY();
-      if((x > 200 && x < 300) && screenChoice == 0)
+      if((x > 130 && x < 590) && screenChoice == 0)
       {
-         if(y > 200 && y < 300)
+         if(y > 280 && y < 430)
          {
             screenChoice = 1;
+            this.display();
             System.out.println("its poppin");
          }
       }
@@ -96,22 +97,23 @@ class Drawing extends JComponent
       {
          int mouseX = MouseInfo.getPointerInfo().getLocation().x;
          int mouseY = MouseInfo.getPointerInfo().getLocation().y;
-         System.out.println(mouseX);
-         if (Screens.screenChoice != 1) 
+         System.out.println("X " + mouseX);
+         System.out.println("Y " + mouseY);
+         if (Screens.screenChoice == 1) 
          {
             BufferedImage img=ImageIO.read(new File("images/Title Screenz.png"));
             g.drawImage(img,0,0,null); 
-            if(mouseX >= 200 && mouseX < 300)
+            if(mouseX >= 130 && mouseX < 590)
             {
-               if(mouseY >= 200 && mouseY < 300)
+               if(mouseY >= 280 && mouseY < 430)
                {
-               System.out.println("yellowoowowow");
+                  System.out.println("yellowoowowow");
                   g.setColor(Color.YELLOW);
-                  g.drawRect(200,200,100,100);
+                  g.drawRect(130,280,460,150);
                }
             }else
             {
-            System.out.println("black");
+               System.out.println("black");
                g.setColor(Color.RED);
                g.drawRect(130,280,460,150);
             }
