@@ -32,8 +32,7 @@ public class Screens implements MouseListener
       frame.add(draw);
       frame.toFront();
       frame.requestFocus();
-      frame.setVisible(true);
-      
+      frame.setVisible(true);      
    }
    
    public void changeScreen(int newScreen)
@@ -51,6 +50,7 @@ public class Screens implements MouseListener
       if(screenChoice == 0)
       {  
          frame.repaint();
+         new ButtonCreate(130,280,460,150,0,frame);
          System.out.println("menu");
       }
       
@@ -94,6 +94,7 @@ class Drawing extends JComponent
 {
    public void paint(Graphics g)
    {
+      System.out.println("is it");
       try   
       {
          int mouseX = MouseInfo.getPointerInfo().getLocation().x;
