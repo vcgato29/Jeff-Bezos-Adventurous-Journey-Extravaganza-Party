@@ -105,22 +105,11 @@ class Drawing extends JComponent
          {
             BufferedImage img=ImageIO.read(new File("images/Title Screenz.png"));
             g.drawImage(img,0,0,null); 
-<<<<<<< HEAD
             if((mouseX >= 140 && mouseX < 590) && (mouseY >= 290 && mouseY < 430))
             {                  
                System.out.println("yellowoowowow");
                g.setColor(Color.YELLOW);
                g.drawRect(140,290,450,140);
-=======
-            if(mouseX >= 140 && mouseX < 580)
-            {
-               if(mouseY >= 280 && mouseY < 420)
-               {
-                  System.out.println("yellowoowowow");
-                  g.setColor(Color.YELLOW);
-                  g.drawRect(140,280,420,140);
-               }
->>>>>>> c97b795103339176e20cc30b9b1d62acaf1a1f18
             }else
             {
                System.out.println("black");
