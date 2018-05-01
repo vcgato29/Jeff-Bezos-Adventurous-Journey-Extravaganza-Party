@@ -71,9 +71,9 @@ public class Screens implements MouseListener
    {
       int x = e.getX();
       int y = e.getY();
-      if((x > 130 && x < 590) && screenChoice == 0)
+      if((x > 140 && x < 580) && screenChoice == 0)
       {
-         if(y > 280 && y < 430)
+         if(y > 290 && y < 420)
          {
             screenChoice = 1;
             System.out.println("Choice: " + screenChoice);
@@ -104,13 +104,13 @@ class Drawing extends JComponent
          {
             BufferedImage img=ImageIO.read(new File("images/Title Screenz.png"));
             g.drawImage(img,0,0,null); 
-            if(mouseX >= 130 && mouseX < 590)
+            if(mouseX >= 140 && mouseX < 580)
             {
-               if(mouseY >= 280 && mouseY < 430)
+               if(mouseY >= 280 && mouseY < 420)
                {
                   System.out.println("yellowoowowow");
                   g.setColor(Color.YELLOW);
-                  g.drawRect(130,280,460,150);
+                  g.drawRect(140,280,420,140);
                }
             }else
             {
