@@ -22,31 +22,35 @@ public class ButtonCreate implements MouseListener
    public int buttonX;
    public int buttonY;
    public int buttonStyle;
-   public JFrame buttonFrame;
+   public JPanel ButtonPanel;
    
-   public ButtonCreate(int xLoc, int yLoc, int width, int height, JFrame frameChoice)
+   public ButtonCreate(int xLoc, int yLoc, int width, int height, JPanel p)
    {
       buttonX = xLoc;
       buttonY = yLoc;
       buttonHeight = height;
       buttonWidth = width;
       buttonStyle = 0;
-      buttonFrame = frameChoice;
+      ButtonPanel = p;
    }
    
-   public ButtonCreate(int xLoc, int yLoc, int width, int height, int style, JFrame frameChoice)
+   public ButtonCreate(int xLoc, int yLoc, int width, int height, int style, JPanel p)
    {
       buttonX = xLoc;
       buttonY = yLoc;
       buttonHeight = height;
       buttonWidth = width;
       buttonStyle = style;
-      buttonFrame = frameChoice;
+      ButtonPanel = p;
+      p.setLocation(buttonX, buttonY);
+      p.setSize(buttonWidth, buttonHeight);
+      paintComponent(p);
+//      ButtonPanel.add(p);
    }
    
-   public void paintComponent(Graphics g)
+   public void paintComponent(JPanel g)
    {
-      g.drawString("TEST BUTTON" , buttonX, buttonY + buttonHeight);
+      g.drawString("TEST BUTTON", buttonX, buttonY + buttonHeight);
    }
    
    public void mouseClicked(MouseEvent e)
