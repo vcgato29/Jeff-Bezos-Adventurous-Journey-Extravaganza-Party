@@ -26,17 +26,17 @@ public class Screens implements MouseListener
       screenChoice = choice;
       Drawing draw = new Drawing();
       frame = new JFrame("Jeff Bezos' adventure time");
-      PlayPanel = new JPanel(new FlowLayout());
-      ButtonCreate b = new ButtonCreate(130,280,460,150,0,PlayPanel);
+//      ButtonCreate b = new ButtonCreate(130,280,460,150,0,PlayPanel);
       frame.setSize(1280,960);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.setResizable(false);
       frame.addMouseListener(this);
       frame.add(draw);
-      frame.add(PlayPanel);
+//      frame.add(PlayPanel);
       frame.toFront();
       frame.requestFocus();
-      frame.setVisible(true);      
+      frame.setVisible(true);
+      this.display();      
    }
    
    public void changeScreen(int newScreen)
@@ -53,11 +53,13 @@ public class Screens implements MouseListener
    {
       if(screenChoice == 0)
       {  
+         PlayPanel = new JPanel(new FlowLayout());
+         PlayPanel.setLocation(140,290);
+         PlayPanel.setSize(450,140);
+         PlayPanel.add(new JButton("Play"));
+         frame.add(PlayPanel);
          frame.repaint();
-<<<<<<< HEAD
-=======
-         new ButtonCreate(140,290,440,130,0,frame);
->>>>>>> a20170e7f62c1bdb6b0e33a4773fa6ed5fd946a6
+//         new ButtonCreate(140,290,440,130,0,PlayPanel);
          System.out.println("menu");
       }
       

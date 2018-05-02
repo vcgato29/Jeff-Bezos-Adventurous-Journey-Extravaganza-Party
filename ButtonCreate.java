@@ -14,8 +14,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.event.*;
 import java.awt.MouseInfo;
+import java.awt.Component.*;
+import javax.swing.JComponent.*;
 
-public class ButtonCreate implements MouseListener
+public class ButtonCreate extends JPanel
+                          implements MouseListener 
 {
    public int buttonHeight;
    public int buttonWidth;
@@ -45,7 +48,7 @@ public class ButtonCreate implements MouseListener
       p.setLocation(buttonX, buttonY);
       p.setSize(buttonWidth, buttonHeight);
       paintComponent(p);
-//      ButtonPanel.add(p);
+      ButtonPanel.add(p);
    }
    
    public void paintComponent(JPanel g)
