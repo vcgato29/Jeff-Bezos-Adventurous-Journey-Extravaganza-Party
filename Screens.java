@@ -15,17 +15,20 @@ import javax.swing.JLabel;
 import java.awt.event.*;
 import java.awt.MouseInfo;
 
-public class Screens implements MouseListener
+public class Screens implements MouseListener, ActionListener
 {
    public static int screenChoice;
    public static JFrame frame;
    public JPanel PlayPanel;
+   public JButton playButton;
    
    public Screens(int choice)
    {
       screenChoice = choice;
       Drawing draw = new Drawing();
       frame = new JFrame("Jeff Bezos' adventure time");
+      this.display(); 
+//      JButton playButton = new JButton("Play");
 //      ButtonCreate b = new ButtonCreate(130,280,460,150,0,PlayPanel);
       frame.setSize(1280,960);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,13 +38,13 @@ public class Screens implements MouseListener
 //      frame.add(PlayPanel);
       frame.toFront();
       frame.requestFocus();
-      frame.setVisible(true);
-      this.display();      
+      frame.setVisible(true);     
    }
    
    public void changeScreen(int newScreen)
    {
       screenChoice = newScreen;
+      this.display();
    }
    
    public int getScreen()
@@ -53,10 +56,11 @@ public class Screens implements MouseListener
    {
       if(screenChoice == 0)
       {  
-         PlayPanel = new JPanel(new FlowLayout());
-         PlayPanel.setLocation(140,290);
-         PlayPanel.setSize(450,140);
-         PlayPanel.add(new JButton("Play"));
+         PlayPanel = new JPanel(new GridLayout(1,1));
+         myJButton jb = new myJButton(140,290,450,140,PlayPanel,"Play",this);
+//         PlayPanel.setSize(450,140);
+//         PlayPanel.add(playButton);
+//         playButton.addActionListener(this);
          frame.add(PlayPanel);
          frame.repaint();
 //         new ButtonCreate(140,290,440,130,0,PlayPanel);
@@ -65,6 +69,7 @@ public class Screens implements MouseListener
       
       if(screenChoice == 1)
       {
+         frame.remove(PlayPanel);
          new game();
          System.out.println("doing stuff");
       }
@@ -97,6 +102,15 @@ public class Screens implements MouseListener
    public void mouseExited(MouseEvent e)
    {
    }
+   
+   public void actionPerformed(ActionEvent e)
+   {
+      if(e.getSource() == playButton)
+      {
+         this.changeScreen(1);
+      }
+   }
+
 }         
 
 class Drawing extends JComponent

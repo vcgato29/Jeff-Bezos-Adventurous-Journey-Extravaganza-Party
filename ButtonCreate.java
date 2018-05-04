@@ -17,8 +17,7 @@ import java.awt.MouseInfo;
 import java.awt.Component.*;
 import javax.swing.JComponent.*;
 
-public class ButtonCreate extends JPanel
-                          implements MouseListener 
+public class ButtonCreate extends JPanel implements MouseListener 
 {
    public int buttonHeight;
    public int buttonWidth;
@@ -53,7 +52,7 @@ public class ButtonCreate extends JPanel
    
    public void paintComponent(JPanel g)
    {
-      g.drawString("TEST BUTTON", buttonX, buttonY + buttonHeight);
+//      g.drawString("TEST BUTTON", buttonX, buttonY + buttonHeight);
    }
    
    public void mouseClicked(MouseEvent e)
