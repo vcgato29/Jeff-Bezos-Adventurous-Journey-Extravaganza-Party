@@ -15,12 +15,12 @@ import javax.swing.JLabel;
 import java.awt.event.*;
 import java.awt.MouseInfo;
 
-public class Screens implements MouseListener, ActionListener
+public class Screens implements MouseListener
 {
    public static int screenChoice;
    public static JFrame frame;
    public JPanel PlayPanel;
-   public JButton playButton;
+   public JPanel InstructionPanel;
    
    public Screens(int choice)
    {
@@ -28,14 +28,12 @@ public class Screens implements MouseListener, ActionListener
       Drawing draw = new Drawing();
       frame = new JFrame("Jeff Bezos' adventure time");
       this.display(); 
-//      JButton playButton = new JButton("Play");
 //      ButtonCreate b = new ButtonCreate(130,280,460,150,0,PlayPanel);
       frame.setSize(1280,960);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.setResizable(false);
       frame.addMouseListener(this);
       frame.add(draw);
-//      frame.add(PlayPanel);
       frame.toFront();
       frame.requestFocus();
       frame.setVisible(true);     
@@ -57,11 +55,11 @@ public class Screens implements MouseListener, ActionListener
       if(screenChoice == 0)
       {  
          PlayPanel = new JPanel(new GridLayout(1,1));
-         myJButton jb = new myJButton(140,290,450,140,PlayPanel,"Play",this);
-//         PlayPanel.setSize(450,140);
-//         PlayPanel.add(playButton);
-//         playButton.addActionListener(this);
+         myJButton PlayButton = new myJButton(140,290,450,140,PlayPanel,"Play",this);
+         InstructionPanel = new JPanel(new GridLayout(1,1));
+         myJButton InstButton = new myJButton(740,290,430,140,InstructionPanel,"Instructions",this);
          frame.add(PlayPanel);
+         frame.add(InstructionPanel);
          frame.repaint();
 //         new ButtonCreate(140,290,440,130,0,PlayPanel);
          System.out.println("menu");
@@ -70,6 +68,7 @@ public class Screens implements MouseListener, ActionListener
       if(screenChoice == 1)
       {
          frame.remove(PlayPanel);
+         frame.remove(InstructionPanel);
          new game();
          System.out.println("doing stuff");
       }
@@ -102,15 +101,6 @@ public class Screens implements MouseListener, ActionListener
    public void mouseExited(MouseEvent e)
    {
    }
-   
-   public void actionPerformed(ActionEvent e)
-   {
-      if(e.getSource() == playButton)
-      {
-         this.changeScreen(1);
-      }
-   }
-
 }         
 
 class Drawing extends JComponent
@@ -128,17 +118,9 @@ class Drawing extends JComponent
          {
             BufferedImage img=ImageIO.read(new File("images/Title Screenz.png"));
             g.drawImage(img,0,0,null); 
-            if((mouseX >= 140 && mouseX < 590) && (mouseY >= 290 && mouseY < 430))
-            {                  
-               System.out.println("yellowoowowow");
-               g.setColor(Color.YELLOW);
-               g.drawRect(140,290,450,140);
-            }else
-            {
-               System.out.println("black");
-               g.setColor(Color.RED);
-               g.drawRect(140,290,450,140);
-            }
+            Font titleFont = new Font("Serif", Font.ITALIC, 50);
+            g.setFont(titleFont);
+            g.drawString("Jeff Bezos' Adventurous Journey Extravaganza Party",120,140);
          }
       }   
       catch(IOException e) 
