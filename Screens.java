@@ -25,6 +25,7 @@ public class Screens extends Canvas implements Runnable, MouseListener {
    public static JFrame frame;
    public JPanel PlayPanel;
    public JPanel InstructionPanel;
+   int x = 800;
    
    private boolean running;
    
@@ -33,7 +34,10 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       running = true; 
       new Thread(this, "JeffsMainThread").start();
    }
-   private void tick(){};
+   
+   public Screens() {
+      }
+   private void tick() {}
    
    private void render() {
       BufferStrategy bs = getBufferStrategy();
@@ -46,9 +50,14 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       
       ///////////////////////////
       
-      g.setColor(Color.RED);
+      g.setColor(Color.WHITE);
       g.fillRect(0,0,WIDTH,HEIGHT);
+      g.setColor(Color.RED);
       
+      g.fillRect(x+50,100,WIDTH/8,HEIGHT/8);
+      g.fillRect(x-50,400,WIDTH/8,HEIGHT/8);
+
+      x -= 4;
       // stuff to draw for game //
       
       g.dispose();
@@ -89,6 +98,8 @@ public class Screens extends Canvas implements Runnable, MouseListener {
          }
          
          if(canRender) {
+            render();
+
             fps++;
          }
          
@@ -160,10 +171,16 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       
       if(screenChoice == 1)
       {
-         frame.remove(PlayPanel);
-         frame.remove(InstructionPanel);
-         start();
-         System.out.println("doing stuff");
+         frame = new JFrame("Jeff time");
+         Screens game = new Screens();
+         frame.add(game);
+         frame.setSize(WIDTH,HEIGHT);
+         frame.setResizable(false);
+         frame.setFocusable(true);
+         frame.requestFocus();
+         game.start();
+         frame.setVisible(true);
+         
       }
    }
  

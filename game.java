@@ -37,6 +37,8 @@ public class game
       return time;
    }
    
+   
+   
    public long elapsed(long strt, long finish) {
       return finish - strt;
    }
