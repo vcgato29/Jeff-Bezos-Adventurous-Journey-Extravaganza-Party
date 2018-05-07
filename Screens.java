@@ -1,3 +1,8 @@
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferStrategy;
 import javax.swing.*;
 import java.util.*;
 import java.awt.*;
@@ -16,24 +21,51 @@ import java.awt.event.*;
 import java.awt.MouseInfo;
 import java.awt.image.BufferStrategy;
 import java.awt.image.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.lang.Object;
+import java.awt.FlowLayout;
+import java.awt.event.*;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.GridLayout;
+
+
 
 public class Screens extends Canvas implements Runnable, MouseListener {
    
-   public static int WIDTH = 1280;
-   public static int HEIGHT = 960;
+   public static final String TITLE = "JEff";
+   public static final int WIDTH = 1280;
+   public static final int HEIGHT = 960;
    public static int screenChoice;
    public static JFrame frame;
    public JPanel PlayPanel;
    public JPanel InstructionPanel;
+   private Texture texture;
+   public static Screens INSTANCE; 
+
    
    private boolean running;
+
+      
    
    private void start(){
       if(running) return;
       running = true; 
       new Thread(this, "JeffsMainThread").start();
    }
-   private void tick(){};
+   
+   public Screens() {
+        texture = new Texture("sniper blue");
+        }
+
+         
    
    private void render() {
       BufferStrategy bs = getBufferStrategy();
@@ -43,11 +75,14 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       }
       
       Graphics g = bs.getDrawGraphics();
+      Graphics2D g2d = (Graphics2D) g;
       
+      g2d.translate(-6, -28);
       ///////////////////////////
       
-      g.setColor(Color.RED);
-      g.fillRect(0,0,WIDTH,HEIGHT);
+      g2d.setColor(Color.RED);
+      g2d.fillRect(0,0,WIDTH,HEIGHT);
+      texture.render(g2d,100,100);
       
       // stuff to draw for game //
       
@@ -61,6 +96,8 @@ public class Screens extends Canvas implements Runnable, MouseListener {
    }
    
    public void run() {
+      running = true;
+      requestFocus();
       double target = 60.0;
       double nsPerTick = 1000000000.0/ target;
       long lastTime = System.nanoTime();
@@ -69,6 +106,8 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       int fps = 0;
       int tps = 0;
       boolean canRender = false;
+ 
+
       
       while(running) {
          long now = System.nanoTime();
@@ -76,7 +115,7 @@ public class Screens extends Canvas implements Runnable, MouseListener {
          lastTime = now;
          
          if(unprocessed >= 1.0) {
-            tick();
+            
             unprocessed--;
             tps++;
             canRender = true;
@@ -89,7 +128,10 @@ public class Screens extends Canvas implements Runnable, MouseListener {
          }
          
          if(canRender) {
+            render();
+
             fps++;
+            
          }
          
          if(System.currentTimeMillis() - 1000 > timer) {
@@ -98,6 +140,7 @@ public class Screens extends Canvas implements Runnable, MouseListener {
             fps = 0;
             tps = 0;
          }
+
        }  
        System.exit(0);
    }
@@ -105,7 +148,8 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       
    public static void main(String[] args) throws IOException
    {
-      screenRun();
+      boolean playing = true;
+      Screens menus = new Screens(0);    
    }
 
    public static void screenRun() throws IOException
@@ -114,7 +158,9 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       Screens menus = new Screens(0);
    }
    
-   public Screens(int choice)
+  
+   
+    public Screens(int choice)
    {
       screenChoice = choice;
       Drawing draw = new Drawing();
@@ -129,8 +175,15 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       frame.add(draw);
       frame.toFront();
       frame.requestFocus();
-      frame.setVisible(true);     
-   }
+      frame.setVisible(true); 
+      frame.addWindowListener(new WindowAdapter() { @Override public void windowClosing( WindowEvent e ) { e.getWindow().dispose(); } });
+
+      
+      
+}
+
+    
+    
    
    public void changeScreen(int newScreen)
    {
@@ -160,10 +213,24 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       
       if(screenChoice == 1)
       {
-         frame.remove(PlayPanel);
-         frame.remove(InstructionPanel);
-         start();
-         System.out.println("doing stuff");
+         Screens game = new Screens();
+         JFrame frame = new JFrame("Jeff");
+         
+         frame.add(game);
+         frame.setSize(WIDTH,HEIGHT);
+         frame.setFocusable(true);
+         frame.setResizable(false);
+         frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                System.err.println("Exiting Game");
+                game.stop();
+            }
+        });
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        game.start();
+ 
+
       }
    }
  
@@ -181,10 +248,9 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       {
          if(y > 290 && y < 420)
          {
+          
             screenChoice = 1;
-            System.out.println("Choice: " + screenChoice);
-            this.display();
-            System.out.println("its poppin");
+            frame.dispose();
          }
       }
    }
@@ -194,7 +260,7 @@ public class Screens extends Canvas implements Runnable, MouseListener {
    public void mouseExited(MouseEvent e)
    {
    }
-}         
+     } 
 
 class Drawing extends JComponent
 {
