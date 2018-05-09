@@ -35,7 +35,7 @@ import javax.swing.JTextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.GridLayout;
-
+import java.math;
 
 
 public class Screens extends Canvas implements Runnable, MouseListener {
@@ -49,7 +49,6 @@ public class Screens extends Canvas implements Runnable, MouseListener {
    public JPanel InstructionPanel;
    private Texture texture;
    private Texture background;
-   private Texture appleGoomba;
    public static Screens INSTANCE; 
 
    
@@ -66,7 +65,6 @@ public class Screens extends Canvas implements Runnable, MouseListener {
    public Screens() {
         texture = new Texture("sniper blue");
         background = new Texture("background");
-        appleGoomba = new Texture("apple logo goomba static");
         }
 
          
@@ -88,7 +86,6 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       g2d.fillRect(0,0,WIDTH,HEIGHT);
       background.render(g2d,0,0);
       texture.render(g2d,100,100);
-      appleGoomba.render(g2d,100,900);
       
       // stuff to draw for game //
       
@@ -135,7 +132,7 @@ public class Screens extends Canvas implements Runnable, MouseListener {
          
          if(canRender) {
             render();
-
+            
             fps++;
             
          }
