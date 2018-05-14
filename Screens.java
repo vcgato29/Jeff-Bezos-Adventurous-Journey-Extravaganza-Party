@@ -48,6 +48,7 @@ public class Screens extends Canvas implements Runnable, MouseListener {
    public JPanel PlayPanel;
    public JPanel InstructionPanel;
    private Texture texture;
+   private Texture background;
    public static Screens INSTANCE; 
 
    
@@ -63,6 +64,8 @@ public class Screens extends Canvas implements Runnable, MouseListener {
    
    public Screens() {
         texture = new Texture("sniper blue");
+        background = new Texture("background");
+        
         }
 
          
@@ -82,6 +85,7 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       
       g2d.setColor(Color.RED);
       g2d.fillRect(0,0,WIDTH,HEIGHT);
+      background.render(g2d,0,0);
       texture.render(g2d,100,100);
       
       // stuff to draw for game //
