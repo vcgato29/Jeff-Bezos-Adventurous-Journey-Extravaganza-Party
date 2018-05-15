@@ -29,7 +29,7 @@ public class Texture {
 
     private BufferedImage image;
     private String        fileName;
-    private int           width, height;
+    public int           width, height;
 
     public Texture(String fileName) {
         this.fileName = fileName;

@@ -65,6 +65,10 @@ public class Screens extends Canvas implements Runnable, MouseListener {
    public Screens() {
         texture = new Texture("sniper blue");
         background = new Texture("background");
+<<<<<<< HEAD
+        
+=======
+>>>>>>> f7311404be2fe7ec868a4f44ffa2544e3c7816dc
         }
 
          
