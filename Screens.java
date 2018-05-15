@@ -122,7 +122,7 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       g2d.fillRect(0,0,WIDTH,HEIGHT);
       background.render(g2d,0,0);
       texture.render(g2d,100,100);
-      Floor f = new Floor(20,g2d);
+      Floor f = new Floor(50,g2d);
       jeffy.render(g2d,playerX,playerY);
       jeffyArm.render(g2d,armX,armY);
       

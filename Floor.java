@@ -47,7 +47,7 @@ public class Floor
    {
       brickNum = bN;
       int x = 0;
-      int y = 100;
+      int y = 928;
 
       for(int i = 0; i <= brickNum; i++)
       {
