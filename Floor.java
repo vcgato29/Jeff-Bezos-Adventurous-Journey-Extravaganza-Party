@@ -36,31 +36,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.GridLayout;
 
-public class Brick
+public class Floor
 {
-   public Texture brick;
-   public boolean spikes;
-   public int x;
-   public int y;
+   private Texture brick;
    public int width = 32;
    public int height = 32;
-   public Brick[] floor = new Brick[1000];
-   public boolean makeFloor;
+   public int brickNum;
    
-   public Brick(int brickX,int brickY,boolean type,boolean mF)
+   public Floor(int bN, Graphics2D g2d)
    {
-      brickX = x;
-      brickY = y;
-      spikes = type;
-      makeFloor = mF;
-      brick = new Texture("BRICK1");
-      if(makeFloor == true && spikes == false)
+      brickNum = bN;
+      int x = 0;
+      int y = 100;
+
+      for(int i = 0; i <= brickNum; i++)
       {
-         for(int i = 0; i < floor.length; i++)
-         {
-            floor[i] = new Brick(x + 32, y + 32, false, false);
-            
-         }
+         brick = new Texture("BRICK1");
+         brick.render(g2d,x,y);
+         x += width;
       }
    }
 }
