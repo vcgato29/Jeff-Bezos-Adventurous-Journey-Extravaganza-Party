@@ -9,5 +9,5 @@ int armX = x + 47;
 int armY = y + 33;
 Texture jeffy;
 Texture jeffyArm;
-
 }
+
