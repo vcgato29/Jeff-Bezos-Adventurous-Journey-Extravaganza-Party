@@ -59,6 +59,7 @@ public class Brick
          for(int i = 0; i < floor.length; i++)
          {
             floor[i] = new Brick(x + 32, y + 32, false, false);
+            
          }
       }
    }
