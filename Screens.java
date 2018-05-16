@@ -43,6 +43,7 @@ public class Screens extends Canvas implements Runnable, MouseListener {
    public static final String TITLE = "JEff";
    public static final int WIDTH = 1280;
    public static final int HEIGHT = 960;
+   public int floorChange = 0;
    public static int screenChoice;
    public static JFrame frame;
    public JPanel PlayPanel;
@@ -122,9 +123,10 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       g2d.fillRect(0,0,WIDTH,HEIGHT);
       background.render(g2d,0,0);
       texture.render(g2d,100,100);
-      Floor f = new Floor(50,g2d);
+      Floor f = new Floor(floorChange, 50,g2d);
       jeffy.render(g2d,playerX,playerY);
       jeffyArm.render(g2d,armX,armY);
+      floorChange -= 4;
       
       int brickConfig = (int)(Math.random() * 10);
      

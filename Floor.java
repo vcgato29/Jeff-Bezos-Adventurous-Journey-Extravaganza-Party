@@ -42,18 +42,19 @@ public class Floor
    public int width = 32;
    public int height = 32;
    public int brickNum;
+   public int startX;
    
-   public Floor(int bN, Graphics2D g2d)
+   public Floor(int sX, int bN, Graphics2D g2d)
    {
       brickNum = bN;
-      int x = 0;
+      startX = sX;
       int y = 928;
 
       for(int i = 0; i <= brickNum; i++)
       {
          brick = new Texture("BRICK1");
-         brick.render(g2d,x,y);
-         x += width;
+         brick.render(g2d,startX,y);
+         startX += width;
       }
    }
 }
