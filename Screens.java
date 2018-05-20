@@ -60,7 +60,7 @@ public class Screens extends Canvas implements Runnable, MouseListener {
    public Texture jeffyArm;
    public int x = 0;
    public int y;
-   public int gravity = 1;
+   public int gravity = 2;
    public int yvel;
    public Texture brick1;
    public Texture brick2;
@@ -127,8 +127,8 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       background.render(g2d,0,0);
       texture.render(g2d,100,100);
       Floor f = new Floor(floorChange, 50,g2d);
-      if (playerX > Floor.y)
-         playerX -= gravity; 
+      if (playerY < 528)
+         playerY += (gravity*gravity); 
       jeffy.render(g2d,playerX,playerY);
       jeffyArm.render(g2d,armX,armY);
       floorChange -= 4;
