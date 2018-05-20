@@ -109,7 +109,9 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       g2d.fillRect(0,0,WIDTH,HEIGHT);
       background.render(g2d,0,0);
       texture.render(g2d,100,100);
-      Floor f = new Floor(floorChange, 50,g2d);
+      Floor f = new Floor(floorChange, 600, 100,g2d);
+      f.upLevel(floorChange + 600,20,1,g2d);
+      f.upLevel(floorChange + 700,10,2,g2d);
       if (playerY < 528)
          playerY += (gravity*gravity); 
      
