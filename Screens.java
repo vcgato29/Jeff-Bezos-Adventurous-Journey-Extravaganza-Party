@@ -39,7 +39,7 @@ import java.awt.GridLayout;
 
 
 
-public class Screens extends Canvas implements Runnable, MouseListener {
+public class Screens extends Canvas implements Runnable, MouseListener, KeyListener {
    
    public static final String TITLE = "JEff";
    public static final int WIDTH = 1280;
@@ -61,27 +61,9 @@ public class Screens extends Canvas implements Runnable, MouseListener {
    public int x = 0;
    public int y;
    public int gravity = 2;
-   public int yvel;
-   public Texture brick1;
-   public Texture brick2;
-   public Texture brick3;
-   public Texture brick4;
-   public Texture brick5;
-   public Texture brick6;
-   public Texture brick7;
-   public Texture brick8;
-   public Texture brick9;
-   public Texture brick10;
-   public Texture brick11;
-   public Texture brick12;
-   public Texture brick13;
-   public Texture brick14;
-   public Texture brick15;
-   public Texture brick16;
-   public Texture brick17;
-   public Texture brick18;
-   public Texture brick19;
-   public Texture brick20;
+   public int yvel = 0;
+   public int gravMag = 0;
+
    
    
    
@@ -93,6 +75,7 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       if(running) return;
       running = true; 
       new Thread(this, "JeffsMainThread").start();
+      addKeyListener(this);
    }
    
    public Screens() {
@@ -129,6 +112,22 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       Floor f = new Floor(floorChange, 50,g2d);
       if (playerY < 528)
          playerY += (gravity*gravity); 
+     
+     
+      if (yvel > 0) {
+        gravMag -= (gravity*gravity);
+        yvel = yvel + gravMag;
+      }
+      
+      
+      if (playerY < 528) {
+         gravMag = 0;
+         yvel=0;
+      }
+      playerY = playerY-yvel;
+
+      
+
       jeffy.render(g2d,playerX,playerY);
       jeffyArm.render(g2d,armX,armY);
       floorChange -= 4;
@@ -228,6 +227,7 @@ public class Screens extends Canvas implements Runnable, MouseListener {
       frame.add(draw);
       frame.toFront();
       frame.requestFocus();
+      frame.setLocationRelativeTo(null);
       frame.setVisible(true); 
       frame.addWindowListener(new WindowAdapter() { @Override public void windowClosing( WindowEvent e ) { e.getWindow().dispose(); } });
 
@@ -286,7 +286,26 @@ public class Screens extends Canvas implements Runnable, MouseListener {
 
       }
    }
- 
+   public void keyTyped(KeyEvent e) {
+
+    }
+
+
+    public void keyPressed(KeyEvent e) {
+    if(yvel == 0) {
+        if (e.getKeyCode() == KeyEvent.VK_SPACE){
+         yvel = 98;
+         System.out.println("fyucj yiuy");
+         }
+     }
+    }
+
+
+    public void keyReleased(KeyEvent e) {
+
+    }
+    
+    
    public void mouseClicked(MouseEvent e)
    {
    }
