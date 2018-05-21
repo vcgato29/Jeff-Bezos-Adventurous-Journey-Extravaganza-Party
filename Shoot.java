@@ -36,37 +36,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.GridLayout;
 
-public class Floor
-{
-   private Texture brick;
-   private Texture startBrick;
-   public int width = 32;
-   public int height = 32;
-   public int brickNum;
-   public int startX;
+public class Shoot {
+   public int wep;
+   public int tier;
+   public int x;
    public int y;
+   public Texture bullet = new Texture("bullet");
    
-   public Floor(int sX, int sY, int bN, Graphics2D g2d)
-   {
-      brickNum = bN;
-      startX = sX;
-      y = sY;
-      startBrick = new Texture("BRICK1 w_spikes");
-      startBrick.render(g2d,startX,y);
+   public Shoot(Graphics2D g2d){
+     
+   }
+   
+   public void fire(int inX, int inY, Graphics2D g2d) {
+      x = inX;
+      y = inY;
 
-      for(int i = 0; i <= brickNum; i++)
-      {
-         startX += width;
-         brick = new Texture("BRICK1");
-         brick.render(g2d,startX,y);
-      }
+      
    }
+}
    
-   public void upLevel(int upStart, int upLength, int cU, Graphics2D g2d)
-   {
-      int countUps = cU;
-      int yNewFloor = y;
-      yNewFloor -= (countUps * 32);
-      new Floor(upStart, yNewFloor, upLength, g2d);
-   }
-} 
+   

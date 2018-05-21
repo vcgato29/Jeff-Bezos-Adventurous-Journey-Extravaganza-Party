@@ -63,6 +63,12 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    public int gravity = 2;
    public int yvel = 0;
    public int gravMag = 0;
+   public int mouseX= MouseInfo.getPointerInfo().getLocation().x;
+   public int mouseY= MouseInfo.getPointerInfo().getLocation().y;
+   public boolean shoot = false;
+   public int speed = 30;
+   public int count = 0;
+
 
    
    
@@ -76,6 +82,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       running = true; 
       new Thread(this, "JeffsMainThread").start();
       addKeyListener(this);
+      addMouseListener(this);
    }
    
    public Screens() {
@@ -103,12 +110,16 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       
       g2d.translate(-6, -28);
       ///////////////////////////
+      Shoot shooter = new Shoot(g2d);
+      
       armX = playerX + 45;
       armY = playerY + 26;
+      mouseX= MouseInfo.getPointerInfo().getLocation().x;
+      mouseY= MouseInfo.getPointerInfo().getLocation().y; 
       g2d.setColor(Color.RED);
       g2d.fillRect(0,0,WIDTH,HEIGHT);
       background.render(g2d,0,0);
-      texture.render(g2d,100,100);
+      texture.render(g2d,mouseX-420,mouseY-50);
       Floor f = new Floor(floorChange, 600, 100,g2d);
       f.upLevel(floorChange + 600,20,1,g2d);
       f.upLevel(floorChange + 700,10,2,g2d);
@@ -128,13 +139,25 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       }
       playerY = playerY-yvel;
 
-      
+      if (shoot) {
+         count++;
+         shooter.fire(mouseX-410,mouseY-50,g2d);
+         shooter.bullet.render(g2d,shooter.x+speed,shooter.y);
+         speed += 30;
+         if (count > 42) {
+            count = 0;
+            speed = 30;
+            shoot = false;
+         }
+      }
+         
 
       jeffy.render(g2d,playerX,playerY);
+
       jeffyArm.render(g2d,armX,armY);
+
       floorChange -= 4;
-      
-      int brickConfig = (int)(Math.random() * 10);
+
      
       
       // stuff to draw for game //
@@ -310,23 +333,26 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
     
    public void mouseClicked(MouseEvent e)
    {
+      
    }
    public void mousePressed(MouseEvent e)
    {
+      shoot = true;
    }
    public void mouseReleased(MouseEvent e)
-   {
-      int x = e.getX();
-      int y = e.getY();
-      if((x > 140 && x < 580) && screenChoice == 0)
-      {
-         if(y > 290 && y < 420)
+   { 
+      if(!running) {
+       int x = e.getX();
+         int y = e.getY();
+       if((x > 140 && x < 580) && screenChoice == 0)
          {
-          
+          if(y > 290 && y < 420)
+         {
             screenChoice = 1;
             frame.dispose();
          }
       }
+     }
    }
    public void mouseEntered(MouseEvent e)
    {
