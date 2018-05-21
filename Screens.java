@@ -78,7 +78,8 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       
    
    private void start(){
-      if(running) return;
+      if(running) 
+         return;
       running = true; 
       new Thread(this, "JeffsMainThread").start();
       addKeyListener(this);
@@ -86,15 +87,15 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    }
    
    public Screens() {
-        Player jeff = new Player();
-        texture = new Texture("sniper blue");
-        background = new Texture("background");
-        jeffy = new Texture("bezos");
-        jeffyArm = new Texture("bezosarm");
-        playerX = 100;
-        playerY = 480;
+      Player jeff = new Player();
+      texture = new Texture("sniper blue");
+      background = new Texture("background");
+      jeffy = new Texture("bezos");
+      jeffyArm = new Texture("bezosarm");
+      playerX = 100;
+      playerY = 480;
         
-        }
+   }
 
          
    
@@ -128,8 +129,8 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
      
      
       if (yvel > 0) {
-        gravMag -= (gravity*gravity);
-        yvel = yvel + gravMag;
+         gravMag -= (gravity*gravity);
+         yvel = yvel + gravMag;
       }
       
       
@@ -138,7 +139,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          yvel=0;
       }
       playerY = playerY-yvel;
-
+   
       if (shoot) {
          count++;
          shooter.fire(mouseX-410,mouseY-50,g2d);
@@ -151,13 +152,13 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          }
       }
          
-
+   
       jeffy.render(g2d,playerX,playerY);
-
+   
       jeffyArm.render(g2d,armX,armY);
-
+   
       floorChange -= 4;
-
+   
      
       
       // stuff to draw for game //
@@ -165,10 +166,11 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       g.dispose();
       g2d.dispose();
       bs.show();
-    }
+   }
    
-   private void stop(){
-      if(!running) return;
+   private void stop() {
+      if(!running) 
+         return;
       running = false;
    }
    
@@ -183,8 +185,8 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       int fps = 0;
       int tps = 0;
       boolean canRender = false;
- 
-
+   
+   
       
       while(running) {
          long now = System.nanoTime();
@@ -217,9 +219,9 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
             fps = 0;
             tps = 0;
          }
-
-       }  
-       System.exit(0);
+      
+      }  
+      System.exit(0);
    }
 
       
@@ -237,13 +239,13 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    
   
    
-    public Screens(int choice)
+   public Screens(int choice)
    {
       screenChoice = choice;
       Drawing draw = new Drawing();
       frame = new JFrame("Jeff Bezos' adventure time");
       this.display(); 
-//      ButtonCreate b = new ButtonCreate(130,280,460,150,0,PlayPanel);
+   //      ButtonCreate b = new ButtonCreate(130,280,460,150,0,PlayPanel);
       frame.setSize(WIDTH,HEIGHT);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.setResizable(false);
@@ -254,11 +256,13 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       frame.requestFocus();
       frame.setLocationRelativeTo(null);
       frame.setVisible(true); 
-      frame.addWindowListener(new WindowAdapter() { @Override public void windowClosing( WindowEvent e ) { e.getWindow().dispose(); } });
-
+      frame.addWindowListener(
+         new WindowAdapter() { 
+            @Override public void windowClosing( WindowEvent e ) { e.getWindow().dispose(); } });
+   
       
       
-}
+   }
 
     
     
@@ -285,7 +289,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          frame.add(PlayPanel);
          frame.add(InstructionPanel);
          frame.repaint();
-//         new ButtonCreate(140,290,440,130,0,PlayPanel);
+      //         new ButtonCreate(140,290,440,130,0,PlayPanel);
          System.out.println("menu");
       }
       
@@ -298,37 +302,37 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          frame.setSize(WIDTH,HEIGHT);
          frame.setFocusable(true);
          frame.setResizable(false);
-         frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.err.println("Exiting Game");
-                game.stop();
-            }
-        });
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        game.start();
- 
-
+         frame.addWindowListener(
+            new WindowAdapter() {
+               public void windowClosing(WindowEvent e) {
+                  System.err.println("Exiting Game");
+                  game.stop();
+               }
+            });
+         frame.setLocationRelativeTo(null);
+         frame.setVisible(true);
+         game.start();
+      
+      
       }
    }
    public void keyTyped(KeyEvent e) {
+   
+   }
 
-    }
 
-
-    public void keyPressed(KeyEvent e) {
-    if(yvel == 0) {
-        if (e.getKeyCode() == KeyEvent.VK_SPACE){
-         yvel = 98;
-         System.out.println("fyucj yiuy");
+   public void keyPressed(KeyEvent e) {
+      if(yvel == 0) {
+         if (e.getKeyCode() == KeyEvent.VK_SPACE){
+            yvel = 98;
          }
-     }
-    }
+      }
+   }
 
 
-    public void keyReleased(KeyEvent e) {
-
-    }
+   public void keyReleased(KeyEvent e) {
+   
+   }
     
     
    public void mouseClicked(MouseEvent e)
@@ -342,17 +346,17 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    public void mouseReleased(MouseEvent e)
    { 
       if(!running) {
-       int x = e.getX();
+         int x = e.getX();
          int y = e.getY();
-       if((x > 140 && x < 580) && screenChoice == 0)
+         if((x > 140 && x < 580) && screenChoice == 0)
          {
-          if(y > 290 && y < 420)
-         {
-            screenChoice = 1;
-            frame.dispose();
+            if(y > 290 && y < 420)
+            {
+               screenChoice = 1;
+               frame.dispose();
+            }
          }
       }
-     }
    }
    public void mouseEntered(MouseEvent e)
    {
@@ -360,7 +364,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    public void mouseExited(MouseEvent e)
    {
    }
-     } 
+} 
 
 class Drawing extends JComponent
 {
