@@ -68,6 +68,8 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    public boolean shoot = false;
    public int speed = 30;
    public int count = 0;
+   public Player jeff = new Player();
+
 
 
    
@@ -87,14 +89,13 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    }
    
    public Screens() {
-      Player jeff = new Player();
       texture = new Texture("sniper blue");
       background = new Texture("background");
       jeffy = new Texture("bezos");
       jeffyArm = new Texture("bezosarm");
       playerX = 100;
       playerY = 480;
-        
+   
    }
 
          
@@ -105,7 +106,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          createBufferStrategy(3);
          return;
       }
-      
+      System.out.println(jeff.health);
       Graphics g = bs.getDrawGraphics();
       Graphics2D g2d = (Graphics2D) g;
       
@@ -123,9 +124,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       texture.render(g2d,mouseX-420,mouseY-50);
       Floor f = new Floor(floorChange, 600, 100,g2d);
       f.upLevel(floorChange + 600,20,1,g2d);
-      System.out.println(f.getFloorHeight() + " 1");
       f.upLevel(floorChange + 700,10,2,g2d);
-      System.out.println(f.getFloorHeight() + " 2");
       if (playerY < 528)
          playerY += (gravity*gravity); 
      
@@ -160,6 +159,16 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       jeffyArm.render(g2d,armX,armY);
    
       floorChange -= 4;
+   
+           if (screenChoice == 1)
+         {
+            int maxHP = 300;
+            g.drawRect(0,0,256,48);
+            int ratio = jeff.health/maxHP;
+            int newX = ratio * 256;
+            g.setColor(Color.GREEN);
+            g.fillRect(0,0,newX,48);
+         }
    
      
       
@@ -200,11 +209,13 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
             unprocessed--;
             tps++;
             canRender = true;
-         } else canRender = false;
+         } 
+         else canRender = false;
          
          try {
             Thread.sleep(1);
-         } catch (InterruptedException e) {
+         } 
+         catch (InterruptedException e) {
             e.printStackTrace();
          }
          
@@ -259,8 +270,8 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       frame.setLocationRelativeTo(null);
       frame.setVisible(true); 
       frame.addWindowListener(
-         new WindowAdapter() { 
-            @Override public void windowClosing( WindowEvent e ) { e.getWindow().dispose(); } });
+            new WindowAdapter() { 
+               @Override public void windowClosing( WindowEvent e ) { e.getWindow().dispose(); } });
    
       
       
@@ -293,6 +304,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          frame.repaint();
       //         new ButtonCreate(140,290,440,130,0,PlayPanel);
          System.out.println("menu");
+ 
       }
       
       if(screenChoice == 1)
@@ -305,12 +317,12 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          frame.setFocusable(true);
          frame.setResizable(false);
          frame.addWindowListener(
-            new WindowAdapter() {
-               public void windowClosing(WindowEvent e) {
-                  System.err.println("Exiting Game");
-                  game.stop();
-               }
-            });
+               new WindowAdapter() {
+                  public void windowClosing(WindowEvent e) {
+                     System.err.println("Exiting Game");
+                     game.stop();
+                  }
+               });
          frame.setLocationRelativeTo(null);
          frame.setVisible(true);
          game.start();
