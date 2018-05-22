@@ -45,6 +45,9 @@ public class Floor
    public int brickNum;
    public int startX;
    public int y;
+   public int countUps;
+   public int upStart;
+   public int yNewFloor;
    
    public Floor(int sX, int sY, int bN, Graphics2D g2d)
    {
@@ -62,11 +65,22 @@ public class Floor
       }
    }
    
-   public void upLevel(int upStart, int upLength, int cU, Graphics2D g2d)
+   public void upLevel(int uS, int upLength, int cU, Graphics2D g2d)
    {
-      int countUps = cU;
-      int yNewFloor = y;
+      countUps = cU;
+      upStart = uS;
+      yNewFloor = y;
       yNewFloor -= (countUps * 32);
       new Floor(upStart, yNewFloor, upLength, g2d);
+   }
+   
+   public int getFloorHeight()
+   {  
+      if(upStart <= 0)
+      {
+         return yNewFloor;
+      }
+      else
+      return 600;
    }
 } 
