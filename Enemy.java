@@ -5,6 +5,7 @@ public class Enemy
    public int enemyX;
    public int enemyY;
    public int type;
+   boolean isAlive;
    public Texture t = new Texture("apple logo goomba static");
 
    public Enemy (int	type)	
