@@ -12,7 +12,10 @@ public class Player
    
    public Player() {}
 
-
+   public int getPlayerHeight()
+   {
+      return (int)((y + 72) /32);
+   }
 
 }
 
