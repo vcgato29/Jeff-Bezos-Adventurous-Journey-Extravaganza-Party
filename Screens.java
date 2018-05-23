@@ -132,7 +132,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       f.upLevel(floorChange, 600,20,1,floorTracker,g2d);
       f.upLevel(floorChange, 700,10,2,floorTracker,g2d);
       f.upLevel(floorChange, 1500,10,1,floorTracker,g2d);
-      if (playerY < 528)
+      if (playerY < 528-((floorTracker[f.getFloorHeight(floorChange,playerX)])*32))
          playerY += (gravity*gravity); 
      
      
@@ -142,7 +142,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       }
       
       
-      if (playerY < 528) {
+      if (playerY < 528-((floorTracker[f.getFloorHeight(floorChange,playerX)])*32)) {
          gravMag = 0;
          yvel=0;
       }

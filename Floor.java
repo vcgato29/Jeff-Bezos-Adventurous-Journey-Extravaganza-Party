@@ -82,6 +82,6 @@ public class Floor
    
    public int getFloorHeight(int floorChange, int pX)
    {  
-      return (Math.abs(floorChange)+(pX+47))/4;
+      return (Math.abs(floorChange)+(pX))/4;
    }
 } 
