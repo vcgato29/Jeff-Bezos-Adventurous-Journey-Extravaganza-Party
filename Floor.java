@@ -43,11 +43,12 @@ public class Floor
    public int width = 32;
    public int height = 32;
    public int brickNum;
-   public int startX;
+   private int startX;
    public int y;
    public int countUps;
    public int upStart;
    public int yNewFloor;
+
    
    public Floor(int sX, int sY, int bN, Graphics2D g2d)
    {
@@ -65,22 +66,22 @@ public class Floor
       }
    }
    
-   public void upLevel(int uS, int upLength, int cU, Graphics2D g2d)
+   public int[] upLevel(int floorChange, int floorStart, int upLength, int cU, int[] fT, Graphics2D g2d)
    {
       countUps = cU;
-      upStart = uS;
+      upStart = floorChange + floorStart;
       yNewFloor = y;
       yNewFloor -= (countUps * 32);
       new Floor(upStart, yNewFloor, upLength, g2d);
+      for(int i = floorStart/4; i < ((floorStart + (upLength*32))/4); i++)
+      {
+         fT[i] = countUps;
+      }
+      return fT;
    }
    
-   public int getFloorHeight()
+   public int getFloorHeight(int floorChange, int pX)
    {  
-      if(upStart <= 0)
-      {
-         return yNewFloor;
-      }
-      else
-      return 600;
+      return (Math.abs(floorChange)+(pX+47))/4;
    }
 } 

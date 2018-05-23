@@ -69,6 +69,9 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    public int speed = 30;
    public int count = 0;
    public Player jeff = new Player();
+   public int mapLength = 3200;
+   public int stepSize = 4;
+   public int[] floorTracker = new int[mapLength/stepSize];
 
 
 
@@ -93,8 +96,12 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       background = new Texture("background");
       jeffy = new Texture("bezos");
       jeffyArm = new Texture("bezosarm");
-      playerX = 100;
+      playerX = 93;
       playerY = 480;
+      for(int i = 0; i < floorTracker.length; i++)
+      {
+         floorTracker[i] = 0;
+      }
    
    }
 
@@ -106,7 +113,6 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          createBufferStrategy(3);
          return;
       }
-      System.out.println(jeff.health);
       Graphics g = bs.getDrawGraphics();
       Graphics2D g2d = (Graphics2D) g;
       
@@ -123,8 +129,9 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       background.render(g2d,0,0);
       texture.render(g2d,mouseX-420,mouseY-50);
       Floor f = new Floor(floorChange, 600, 100,g2d);
-      f.upLevel(floorChange + 600,20,1,g2d);
-      f.upLevel(floorChange + 700,10,2,g2d);
+      f.upLevel(floorChange, 600,20,1,floorTracker,g2d);
+      f.upLevel(floorChange, 700,10,2,floorTracker,g2d);
+      f.upLevel(floorChange, 1500,10,1,floorTracker,g2d);
       if (playerY < 528)
          playerY += (gravity*gravity); 
      
@@ -159,6 +166,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       jeffyArm.render(g2d,armX,armY);
    
       floorChange -= 4;
+      System.out.println((Math.abs(floorChange)+(playerX+47))/4 + "-" + floorTracker[(Math.abs(floorChange)+(playerX+47))/4] + ":" + floorTracker[f.getFloorHeight(floorChange,playerX)]);
    
            if (screenChoice == 1)
          {
