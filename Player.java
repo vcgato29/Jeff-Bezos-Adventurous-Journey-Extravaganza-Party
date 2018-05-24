@@ -14,15 +14,14 @@ public class Player
 
    public int getPlayerHeight()
    {
-      return (int)((y + 72) /32);
+      return 20 - (int)((y + 72) /32);
    }
    
    public void checkCollision(int floorChange, int[] ft, Floor f)
    {
-      if (ft[f.getFloorHeight(floorChange, this.x)] != this.getPlayerHeight()-1)
+      if (ft[f.getFloorHeight(floorChange, this.x)] == this.getPlayerHeight()-1)
       {
-        this.health = 0;
-        System.out.println("he dead");
+        this.health = 0;      
       }
    }
 
