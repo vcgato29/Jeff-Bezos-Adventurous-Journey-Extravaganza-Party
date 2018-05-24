@@ -47,12 +47,21 @@ public class Enemy
    boolean isAlive;
    public int enemySpeed;
    public Texture appleGoomba = new Texture("apple logo goomba static");
+   public int count = 0;
+   public boolean backwards;
+   public int startLevel;
 
-   public Enemy (int floorC, int eX, int eLevel, int eSpeed, int type, Graphics2D g2d)	
+   public Enemy (int floorC, int eX, int eLevel, int eSpeed, int type, int count, Graphics2D g2d)	
    {
-      enemyY = 600 - eLevel * 32;
+      startLevel = eLevel;
+      enemyY = 600 - startLevel * 32;
+      enemySpeed = eSpeed;
+      if(backwards)
+      {
+         enemySpeed*= -1;
+      }
       type = type;
-      floorC += eSpeed;
+      floorC += (enemySpeed * count);
       enemyX = eX + floorC;
       if	(type	==	1)
       {
@@ -80,5 +89,15 @@ public class Enemy
          damage =	100;
       }
       appleGoomba.render(g2d, enemyX, enemyY);
+      count++;
+   }
+   
+   public void turnAround(Enemy e, int floorChange, int[] floorTracker, Floor f, Graphics2D g2d)
+   {
+      if (floorTracker[f.getFloorHeight(floorChange, e.enemyX)] != e.startLevel)
+      {
+         backwards=true;
+         System.out.println("backing up");
+      }
    }
 }

@@ -72,6 +72,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    public int mapLength = 3200;
    public int stepSize = 4;
    public int[] floorTracker = new int[mapLength/stepSize];
+   public int enemyCount = 0;
 
 
 
@@ -165,10 +166,14 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    
       jeffyArm.render(g2d,armX,armY);
       
-      Enemy goomb1 = new Enemy(floorChange,750,3,2,1,g2d);
+      Enemy goomb1 = new Enemy(floorChange,750,3,2,1,enemyCount,g2d);
+      goomb1.turnAround(goomb1,floorChange,floorTracker,f,g2d);
+      System.out.println(floorTracker[f.getFloorHeight(floorChange, goomb1.enemyX)]);
+
+      enemyCount++;
    
       floorChange -= 4;
-      System.out.println((Math.abs(floorChange)+(playerX+47))/4 + "-" + floorTracker[(Math.abs(floorChange)+(playerX+47))/4] + ":" + floorTracker[f.getFloorHeight(floorChange,playerX)]);
+      //System.out.println((Math.abs(floorChange)+(playerX+47))/4 + "-" + floorTracker[(Math.abs(floorChange)+(playerX+47))/4] + ":" + floorTracker[f.getFloorHeight(floorChange,playerX)]);
    
            if (screenChoice == 1)
          {
