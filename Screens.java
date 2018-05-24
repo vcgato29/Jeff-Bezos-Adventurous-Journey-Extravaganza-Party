@@ -165,6 +165,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       jeffy.render(g2d,playerX,playerY);
    
       jeffyArm.render(g2d,armX,armY);
+      jeff.checkCollision(floorChange,floorTracker,f);
       
       Enemy goomb1 = new Enemy(floorChange,750,3,2,1,enemyCount,g2d);
       goomb1.turnAround(goomb1,floorChange,floorTracker,f,g2d);
