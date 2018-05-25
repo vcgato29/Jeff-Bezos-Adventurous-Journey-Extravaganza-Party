@@ -68,6 +68,12 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    public boolean shoot = false;
    public int speed = 30;
    public int count = 0;
+   public Player jeff = new Player();
+   public int mapLength = 3200;
+   public int stepSize = 4;
+   public int[] floorTracker = new int[mapLength/stepSize];
+   public int enemyCount = 0;
+
 
 
    
@@ -87,14 +93,18 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    }
    
    public Screens() {
-      Player jeff = new Player();
+      
       texture = new Texture("sniper blue");
       background = new Texture("background");
-      jeffy = new Texture("bezos");
-      jeffyArm = new Texture("bezosarm");
-      playerX = 100;
-      playerY = 480;
-        
+      jeff.jeffy = new Texture("bezos");
+      jeff.jeffyArm = new Texture("bezosarm");
+      jeff.x = 93;
+      jeff.y = 480;
+      for(int i = 0; i < floorTracker.length; i++)
+      {
+         floorTracker[i] = 0;
+      }
+   
    }
 
          
@@ -105,7 +115,6 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          createBufferStrategy(3);
          return;
       }
-      
       Graphics g = bs.getDrawGraphics();
       Graphics2D g2d = (Graphics2D) g;
       
@@ -113,19 +122,20 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       ///////////////////////////
       Shoot shooter = new Shoot(g2d);
       
-      armX = playerX + 45;
-      armY = playerY + 26;
+      jeff.armX = jeff.x + 45;
+      jeff.armY = jeff.y + 26;
       mouseX= MouseInfo.getPointerInfo().getLocation().x;
       mouseY= MouseInfo.getPointerInfo().getLocation().y; 
       g2d.setColor(Color.RED);
       g2d.fillRect(0,0,WIDTH,HEIGHT);
       background.render(g2d,0,0);
-      texture.render(g2d,mouseX-420,mouseY-50);
+      texture.render(g2d,mouseX-125,mouseY-25);
       Floor f = new Floor(floorChange, 600, 100,g2d);
-      f.upLevel(floorChange + 600,20,1,g2d);
-      f.upLevel(floorChange + 700,10,2,g2d);
-      if (playerY < 528)
-         playerY += (gravity*gravity); 
+      f.upLevel(floorChange, 600,20,1,floorTracker,g2d);
+      f.upLevel(floorChange, 700,10,2,floorTracker,g2d);
+      f.upLevel(floorChange, 1500,10,1,floorTracker,g2d);
+      if (jeff.y < 528-((floorTracker[f.getFloorHeight(floorChange,jeff.x)])*32))
+         jeff.y += (gravity*gravity); 
      
      
       if (yvel > 0) {
@@ -134,15 +144,15 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       }
       
       
-      if (playerY < 528) {
+      if (jeff.y < 528-((floorTracker[f.getFloorHeight(floorChange,jeff.x)])*32)) {
          gravMag = 0;
          yvel=0;
       }
-      playerY = playerY-yvel;
+      jeff.y = jeff.y-yvel;
    
       if (shoot) {
          count++;
-         shooter.fire(mouseX-410,mouseY-50,g2d);
+         shooter.fire(mouseX-115,mouseY-25,g2d);
          shooter.bullet.render(g2d,shooter.x+speed,shooter.y);
          speed += 30;
          if (count > 42) {
@@ -153,11 +163,29 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       }
          
    
-      jeffy.render(g2d,playerX,playerY);
+      jeff.jeffy.render(g2d,jeff.x,jeff.y);
    
-      jeffyArm.render(g2d,armX,armY);
+      jeff.jeffyArm.render(g2d,jeff.armX,jeff.armY);
+      jeff.checkCollision(floorChange,floorTracker,f);
+      
+      Enemy goomb1 = new Enemy(floorChange,750,3,0,1,enemyCount,g2d);
+      goomb1.turnAround(goomb1,floorChange,floorTracker,f,g2d);
+      System.out.println(floorTracker[f.getFloorHeight(floorChange, goomb1.enemyX)]);
+      System.out.println(jeff.getPlayerHeight());
+      enemyCount++;
    
       floorChange -= 4;
+      //System.out.println((Math.abs(floorChange)+(playerX+47))/4 + "-" + floorTracker[(Math.abs(floorChange)+(playerX+47))/4] + ":" + floorTracker[f.getFloorHeight(floorChange,playerX)]);
+   
+           if (screenChoice == 1)
+         {
+            int maxHP = 300;
+            g.drawRect(0,0,300,48);
+            int ratio = jeff.health/maxHP;
+            int newX = ratio * 256;
+            g.setColor(Color.GREEN);
+            g.fillRect(0,0,newX,48);
+         }
    
      
       
@@ -198,11 +226,13 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
             unprocessed--;
             tps++;
             canRender = true;
-         } else canRender = false;
+         } 
+         else canRender = false;
          
          try {
             Thread.sleep(1);
-         } catch (InterruptedException e) {
+         } 
+         catch (InterruptedException e) {
             e.printStackTrace();
          }
          
@@ -257,8 +287,8 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       frame.setLocationRelativeTo(null);
       frame.setVisible(true); 
       frame.addWindowListener(
-         new WindowAdapter() { 
-            @Override public void windowClosing( WindowEvent e ) { e.getWindow().dispose(); } });
+            new WindowAdapter() { 
+               @Override public void windowClosing( WindowEvent e ) { e.getWindow().dispose(); } });
    
       
       
@@ -291,6 +321,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          frame.repaint();
       //         new ButtonCreate(140,290,440,130,0,PlayPanel);
          System.out.println("menu");
+ 
       }
       
       if(screenChoice == 1)
@@ -303,12 +334,12 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          frame.setFocusable(true);
          frame.setResizable(false);
          frame.addWindowListener(
-            new WindowAdapter() {
-               public void windowClosing(WindowEvent e) {
-                  System.err.println("Exiting Game");
-                  game.stop();
-               }
-            });
+               new WindowAdapter() {
+                  public void windowClosing(WindowEvent e) {
+                     System.err.println("Exiting Game");
+                     game.stop();
+                  }
+               });
          frame.setLocationRelativeTo(null);
          frame.setVisible(true);
          game.start();
