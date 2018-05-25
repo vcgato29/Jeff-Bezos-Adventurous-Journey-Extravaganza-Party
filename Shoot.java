@@ -50,10 +50,11 @@ public class Shoot {
    public void fire(int inX, int inY, Graphics2D g2d) {
       x = inX;
       y = inY;
-   
+
       
    }
    
    
 }
+   
    
