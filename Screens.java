@@ -57,6 +57,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    public int armX;
    public int armY;
    public Texture jeffy;
+   public Texture jeffy2;
    public Texture jeffyArm;
    public int x = 0;
    public int y;
@@ -68,7 +69,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    public boolean shoot = false;
    public int speed = 30;
    public int count = 0;
-
+   public int countJ = 0;
 
    
    
@@ -91,6 +92,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       texture = new Texture("sniper blue");
       background = new Texture("background");
       jeffy = new Texture("bezos");
+      jeffy2 = new Texture("bezoswalk");
       jeffyArm = new Texture("bezosarm");
       playerX = 100;
       playerY = 480;
@@ -142,7 +144,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    
       if (shoot) {
          count++;
-         shooter.fire(mouseX-410,mouseY-50,g2d);
+         shooter.fire(mouseX-360,mouseY-50,g2d);
          shooter.bullet.render(g2d,shooter.x+speed,shooter.y);
          speed += 30;
          if (count > 42) {
@@ -151,10 +153,16 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
             shoot = false;
          }
       }
-         
-   
-      jeffy.render(g2d,playerX,playerY);
-   
+      
+      countJ++;   
+      if (countJ < 4) {
+         jeffy.render(g2d,playerX,playerY);
+      } else if(countJ >=4){
+         jeffy2.render(g2d,playerX,playerY);
+      } else if(countJ > 6) {
+         countJ = 0;
+      }
+      
       jeffyArm.render(g2d,armX,armY);
    
       floorChange -= 4;
