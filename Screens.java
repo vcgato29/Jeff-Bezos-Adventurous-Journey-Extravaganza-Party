@@ -134,9 +134,9 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       level.createMap(20,50,1); 
       level.createMap(35,45,2);
       level.createMap(80,100,1);
-//      level.createEnemy(f, 800,1,0,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f, 800,1,0,jeff,"apple logo goomba static", g2d);
       level.createEnemy(f, 1600,2,3,jeff,"apple logo goomba static", g2d);
-//      level.createEnemy(f, 2500,1,3,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f, 2500,1,3,jeff,"apple logo goomba static", g2d);
       levels[nrLevels] = level;
       nrLevels++;
            
@@ -145,17 +145,15 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       level.createMap(20,80,1); 
       level.createMap(30,65,2);
       level.createMap(40,60,3);     
-
       level.createMap(80,190,1);
       level.createMap(120,170,2);     
       level.createEnemy(f, 1200,1,2,jeff,"apple logo goomba static", g2d);
       level.createEnemy(f, 1600,2,5,jeff,"apple logo goomba static", g2d);
       level.createEnemy(f, 2500,1,4,jeff,"apple logo goomba static", g2d);
       levels[nrLevels] = level;
-      System.out.println("Level " + nrLevels + " created");
       nrLevels++;      
 
-      System.out.println("Level " + nrLevels + " created");
+      System.out.println("Create " + nrLevels + " levels");
 
    }      
    
@@ -184,6 +182,11 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       enemies[enemyCount] = new Enemy(f,jeff,eX,eSpeed,eType,eImage,g2d); 
       enemyCount++;
    }   
+   
+   private void switchLevel()
+   {
+      System.out.println("New Level");
+   }
    
    private void render(BufferStrategy bs, Graphics g, Graphics2D g2d) {
       
@@ -322,6 +325,9 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          }
          System.out.println("Scene " + l + " Finished");
          l = l + 1;
+         if (alive && l < nrLevels){
+            switchLevel();
+         }
       }
       System.out.println("Game Over");
       g.dispose();
