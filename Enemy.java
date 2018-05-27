@@ -12,6 +12,7 @@ public class Enemy
    public int enemyX;
    private int width;
    private int height;
+   public String imgName;
    public int enemyY;
    public int enemyType;
    public boolean isAlive = true;
@@ -26,6 +27,7 @@ public class Enemy
    {
       f = eF;
       p = eP;
+      imgName = sImage;
       image = new Texture(sImage);
       width = image.getWidth();
       height = image.getHeight();

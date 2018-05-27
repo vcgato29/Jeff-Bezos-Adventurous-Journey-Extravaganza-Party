@@ -56,13 +56,14 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    private int mouseY= MouseInfo.getPointerInfo().getLocation().y;
 
    // configuration variables
-   private double refreshRate = 30.0;
+   private double refreshRate = 60.0;
    private int gravity = 2;
+   private int maxNrLevels = 10;
    private int maxJumpHeight = 160;
    private int playerPosition = 93;
    private int floorBase = 600;
    private int floorDamage = 100; // damage caused by hitting floor
-   private int mapLength = 3200;
+   private int mapLength = 800;
    private int stepSize = 4;
    private int maxEnemyCount = 50;
 
@@ -74,20 +75,23 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    private int y;
    private int count = 0;
    private int enemyCount = 0;
+   private int nrLevels = 0;
    private int jumpHeight = 0;
    private int floorChange = 0;
    private int bulletX = 0;
    private int bulletY = 0;
    private boolean running;
+   private boolean alive = true;
 
    // objects
+   private Level [] levels = new Level[maxNrLevels];
+   private Level level;
    private int [] floorMap = new int[mapLength/stepSize];     
    private Floor f;
    private Shoot shooter;     
    private Player jeff;
    private Enemy [] enemies = new Enemy[maxEnemyCount];
    
-
          
    private void start(){
       if(running) 
@@ -109,7 +113,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
 
    }
 
-   private void createScene(){
+   private void createLevels(){
    
       bs = getBufferStrategy();
       if (bs == null) {
@@ -124,30 +128,57 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       shooter = new Shoot(g2d);
       jeff = new Player(playerPosition, floorBase, f, g2d);
       
-      // create scene
-      floorMap = createMap(floorMap,brickWidth,stepSize,20,50,1); //blocks from 20 to 50 level 1
-      floorMap = createMap(floorMap,brickWidth,stepSize,35,45,2);
-      floorMap = createMap(floorMap,brickWidth,stepSize,80,100,1);
+      // create levels
+      // first level
+      level = new Level(nrLevels, mapLength, stepSize,  maxEnemyCount);
+      level.createMap(20,50,1); 
+      level.createMap(35,45,2);
+      level.createMap(80,100,1);
+//      level.createEnemy(f, 800,1,0,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f, 1600,2,3,jeff,"apple logo goomba static", g2d);
+//      level.createEnemy(f, 2500,1,3,jeff,"apple logo goomba static", g2d);
+      levels[nrLevels] = level;
+      nrLevels++;
+           
+      // second level
+      level = new Level(nrLevels, mapLength, stepSize,  maxEnemyCount);
+      level.createMap(20,80,1); 
+      level.createMap(30,65,2);
+      level.createMap(40,60,3);     
 
-      createEnemy(800,1,0,"apple logo goomba static");
-      createEnemy(1600,2,3,"apple logo goomba static");
-      createEnemy(2500,1,3,"apple logo goomba static");
+      level.createMap(80,190,1);
+      level.createMap(120,170,2);     
+      level.createEnemy(f, 1200,1,2,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f, 1600,2,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f, 2500,1,4,jeff,"apple logo goomba static", g2d);
+      levels[nrLevels] = level;
+      System.out.println("Level " + nrLevels + " created");
+      nrLevels++;      
 
-      f.floorMap = floorMap;
-      
-      
+      System.out.println("Level " + nrLevels + " created");
 
    }      
    
-   private int[] createMap(int[] fM, int width, int stepValue, int start, int end, int height)
-   {
-      for(int i = start; i < end; i++)
+   private void createScene(int levelNr){
+   
+      Level l = levels[levelNr];
+      Enemy [] ens;
+      Enemy e;
+      
+      for (int i=0;i<l.floorMap.length;i++)
       {
-         fM[i] = height;
+         floorMap[i] = l.floorMap[i];
       }
-      return fM;
+      floorChange = 0;
+      ens = l.enemies;
+      for (int i=0; i < l.enemyCount;i++)
+      {
+         e = ens[i];
+         createEnemy(e.enemyX, e.enemySpeed, e.enemyType, e.imgName);
+      }      
+      System.out.println("Scene " + levelNr + " created");
    }
-
+   
    private void createEnemy(int eX, int eSpeed, int eType, String eImage)
    {
       enemies[enemyCount] = new Enemy(f,jeff,eX,eSpeed,eType,eImage,g2d); 
@@ -208,6 +239,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          running = false;
          if (jeff.health<=0){
             System.out.println("You died");
+            alive = false;
          }
       }
 
@@ -234,7 +266,6 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    }
    
    public void run() {
-      running = true;
       requestFocus();
       double target = refreshRate;
       double nsPerTick = 1000000000.0/ target;
@@ -244,48 +275,55 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       int fps = 0;
       int tps = 0;
       boolean canRender = false;
-   
-      createScene();
-         
-      while(running) {
-         long now = System.nanoTime();
-         unprocessed += (now - lastTime) / nsPerTick;
-         lastTime = now;
-         
-         if(unprocessed >= 1.0) {
+      int l;
+
+      createLevels();
+      System.out.println(nrLevels + " scenes");
+      l = 0;
+      while(alive && l < nrLevels){
+         createScene(l);
+         running = true;
+         while(running) {
+            long now = System.nanoTime();
+            unprocessed += (now - lastTime) / nsPerTick;
+            lastTime = now;
             
-            unprocessed--;
-            tps++;
-            canRender = true;
-         } 
-         else {
-            canRender = false;
-         }
-         
-         try {
-            Thread.sleep(1);
-         } 
-         catch (InterruptedException e) {
-            e.printStackTrace();
-         }
-         
-         if(canRender) {
-            render(bs, g, g2d);
+            if(unprocessed >= 1.0) {
+               
+               unprocessed--;
+               tps++;
+               canRender = true;
+            } 
+            else {
+               canRender = false;
+            }
             
-            fps++;
+            try {
+               Thread.sleep(1);
+            } 
+            catch (InterruptedException e) {
+               e.printStackTrace();
+            }
             
-         }
+            if(canRender) {
+               render(bs, g, g2d);
+               
+               fps++;
+               
+            }
+            
+            if(System.currentTimeMillis() - 1000 > timer) {
+               timer += 1000;
+               //System.out.printf("FPS: %d | TPS: %d\n",fps,tps);
+               fps = 0;
+               tps = 0;
+            }
          
-         if(System.currentTimeMillis() - 1000 > timer) {
-            timer += 1000;
-            //System.out.printf("FPS: %d | TPS: %d\n",fps,tps);
-            fps = 0;
-            tps = 0;
          }
-      
+         System.out.println("Scene " + l + " Finished");
+         l = l + 1;
       }
-      System.out.println("Level Finished");
-  
+      System.out.println("Game Over");
       g.dispose();
       g2d.dispose();
       System.exit(0);
@@ -326,13 +364,8 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       frame.addWindowListener(
             new WindowAdapter() { 
                @Override public void windowClosing( WindowEvent e ) { e.getWindow().dispose(); } });
-   
-      
       
    }
-
-    
-    
    
    public void changeScreen(int newScreen)
    {
