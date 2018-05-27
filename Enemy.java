@@ -6,7 +6,9 @@ import java.awt.Graphics2D;
 public class Enemy
 {
    public int health; 
-   public int damage; 
+   public int damage;
+   public int bulletDamage = 50;
+   public int armor = 0; 
    public int enemyX;
    private int width;
    private int height;
@@ -28,38 +30,43 @@ public class Enemy
       width = image.getWidth();
       height = image.getHeight();
       enemyX = eX;
-      enemyY = f.getFloorHeight(0, enemyX) - height;
+      enemyY = f.getFloorHeight(0, enemyX);
       enemySpeed = eSpeed;
       enemyType = type;
       if	(enemyType	==	1)
       {
          health =	100;
          damage =	50;
+         armor = 10;
       }
       else if(enemyType == 2)
       {
          health =	150;
          damage =	50;
+         armor = 10;
       }
       else if (enemyType == 3)
       {
          health =	200;
          damage =	50;
+         armor = 10;
       }
       else if (enemyType == 4)
       {
          health =	250;
          damage =	100;
+         armor = 10;        
       }
       else if (enemyType == 5)
       {
          health =	300;
          damage =	100;
+         armor = 10;         
       }
       image.render(g2d, enemyX, enemyY);
    }
    
-   public void move(int floorChange, int stepSize, Graphics2D g2d)
+   public void move(int floorChange, int stepSize, int screenWidth, Graphics2D g2d)
    {
       if (isAlive==true){
          if (backwards==false)
@@ -67,6 +74,9 @@ public class Enemy
          else
             enemyX = enemyX + stepSize + enemySpeed;
    
+         if (enemyX >= screenWidth && backwards==true){        
+            turnAround();
+         }
          if (enemyX >=0) { // check only when in play
             enemyY = f.getFloorHeight(floorChange, enemyX-width) - height ;
             image.render(g2d, enemyX, enemyY);
@@ -74,6 +84,7 @@ public class Enemy
             // check player collision
             if (p.playerX + p.width > enemyX && p.playerX < enemyX + width && p.playerY + p.height >= enemyY && hit != true){
                p.health = p.health - damage;
+               System.out.println("You hit enemy: your health=" + p.health);
                hit = true;
             }
          }
@@ -92,16 +103,22 @@ public class Enemy
       { // there is a chance for a hit
 //         if (shooter.bulletX > enemyX && shooter.bulletX < enemyX + width && )
   //       {
-            health = health - 100;
-  //          System.out.println("Hit");
+            health = health - bulletDamage + armor;
+            System.out.println("Enemy Hit : enemy health=" + health + " (armor=" + armor + ")");
+            if (health <= 0){
+               kill();
+            }
+            else {   
+               turnAround();
+            }
+            return true;            
     //     }
       }
-//      else
-//         System.out.println("Miss: bspeed=" + shooter.bulletSpeed + ";bx=" + shooter.bulletX + ";lem=" + enemyX + ";rem=" + (int)(enemyX + width) + ";by=" + shooter.bulletY + "tem=" + enemyY + ";bem=" + (int)(enemyY + height));
-      if (health <= 0)
-         return true;
-      else
+      else {
          return false;
+//         System.out.println("Miss: bspeed=" + shooter.bulletSpeed + ";bx=" + shooter.bulletX + ";lem=" + enemyX + ";rem=" + (int)(enemyX + width) + ";by=" + shooter.bulletY + "tem=" + enemyY + ";bem=" + (int)(enemyY + height));
+         
+      }
          
    }
    

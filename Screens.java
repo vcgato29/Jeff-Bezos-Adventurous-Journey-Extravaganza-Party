@@ -56,14 +56,15 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    private int mouseY= MouseInfo.getPointerInfo().getLocation().y;
 
    // configuration variables
+   private double refreshRate = 30.0;
    private int gravity = 2;
-   private int maxJumpHeight = 150;
+   private int maxJumpHeight = 160;
    private int playerPosition = 93;
    private int floorBase = 600;
    private int floorDamage = 100; // damage caused by hitting floor
    private int mapLength = 3200;
    private int stepSize = 4;
-   private int enemyCount = 3;
+   private int maxEnemyCount = 50;
 
    // local variables
    private int brickWidth = 32;
@@ -72,6 +73,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    private int x = 0;
    private int y;
    private int count = 0;
+   private int enemyCount = 0;
    private int jumpHeight = 0;
    private int floorChange = 0;
    private int bulletX = 0;
@@ -83,7 +85,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    private Floor f;
    private Shoot shooter;     
    private Player jeff;
-   private Enemy [] enemies = new Enemy[enemyCount];
+   private Enemy [] enemies = new Enemy[maxEnemyCount];
    
 
          
@@ -119,17 +121,21 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       g2d.translate(-6, -28);
 
       f = new Floor(0, mapLength, stepSize, floorBase, floorMap, g2d);
-      floorMap = createMap(floorMap,brickWidth,stepSize,20,50,1); //blocks from 20 to 50 level 1
-      floorMap = createMap(floorMap,brickWidth,stepSize,35,45,2);
-      floorMap = createMap(floorMap,brickWidth,stepSize,80,100,1);
-      f.floorMap = floorMap;
-      
       shooter = new Shoot(g2d);
       jeff = new Player(playerPosition, floorBase, f, g2d);
       
-      enemies[0] = new Enemy(f,jeff,400,0,1,"apple logo goomba static",g2d); //enemy at 400 pixels
-      enemies[1] = new Enemy(f,jeff,1600,1,3,"apple logo goomba static",g2d);
-      enemies[2] = new Enemy(f,jeff,2500,1,3,"apple logo goomba static",g2d);
+      // create scene
+      floorMap = createMap(floorMap,brickWidth,stepSize,20,50,1); //blocks from 20 to 50 level 1
+      floorMap = createMap(floorMap,brickWidth,stepSize,35,45,2);
+      floorMap = createMap(floorMap,brickWidth,stepSize,80,100,1);
+
+      createEnemy(800,1,0,"apple logo goomba static");
+      createEnemy(1600,2,3,"apple logo goomba static");
+      createEnemy(2500,1,3,"apple logo goomba static");
+
+      f.floorMap = floorMap;
+      
+      
 
    }      
    
@@ -142,6 +148,11 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       return fM;
    }
 
+   private void createEnemy(int eX, int eSpeed, int eType, String eImage)
+   {
+      enemies[enemyCount] = new Enemy(f,jeff,eX,eSpeed,eType,eImage,g2d); 
+      enemyCount++;
+   }   
    
    private void render(BufferStrategy bs, Graphics g, Graphics2D g2d) {
       
@@ -160,7 +171,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       
       // move enemies
       for (int i=0;i<enemyCount;i++){
-         enemies[i].move(floorChange, stepSize, g2d);
+         enemies[i].move(floorChange, stepSize, WIDTH, g2d);
       }
       
       // move player, store jump height to avoid double jumps
@@ -177,8 +188,10 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
                if (enemies[i].isAlive==true){
                   if (enemies[i].checkHit(shooter))
                   {
-                     //System.out.println("Kill " + i);   
-                     enemies[i].kill();
+                     System.out.println("Hit " + i);
+                     if (enemies[i].isAlive!=true){
+                           System.out.println("Enemy Killed " + i);
+                     }
                      shoot = false;
                   }
                }
@@ -223,7 +236,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    public void run() {
       running = true;
       requestFocus();
-      double target = 60.0;
+      double target = refreshRate;
       double nsPerTick = 1000000000.0/ target;
       long lastTime = System.nanoTime();
       long timer = System.currentTimeMillis();

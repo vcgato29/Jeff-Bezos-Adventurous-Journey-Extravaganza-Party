@@ -42,9 +42,9 @@ public class Player
       }
 
       // bring player back to floor level slowly if necessary     
-      floorHeight = f.getFloorHeight(floorChange,playerX) - height;
+      floorHeight = f.getFloorHeight(floorChange,playerX);
 
-      if (playerY < floorHeight){ 
+      if (playerY + height < floorHeight){ 
          playerY += (gravity*gravity);
          jumpValue -= (gravity*gravity);
          hit = false;
@@ -55,8 +55,9 @@ public class Player
       armY = playerY + 26; // reset arm
 
       // check collision with floor
-      if (playerY > floorHeight + 2 && hit != true){
+      if (playerY + height > floorHeight + 2 && hit != true){
          health = health - floorDamage;
+         System.out.println("You hit floor: health=" + health);
          hit = true;
       }      
       
