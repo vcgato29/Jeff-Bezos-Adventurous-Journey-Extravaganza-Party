@@ -7,6 +7,7 @@ public class Player
    public int gunSelection;
    boolean isAlive = true; 
    public int gravMag = 0;
+   public int jumpValue;
    public int playerX ;
    public int playerY ; 
    public int width = 50;
@@ -30,47 +31,41 @@ public class Player
       jeffy.render(g2d, playerX, playerY);
    }
 
-   public void move(int jump, int gravity, int floorChange, Graphics2D g2d){
+   public int move(int jump, int gravity, int floorChange, int floorDamage, Graphics2D g2d){
    
       int floorHeight;
-      
-      // see if we're jumping
-      if (jump > 0) {
-         gravMag -= (gravity*gravity);
-         jump = jump + gravMag;  
-      }         
-
-      // bring player back to floor level slowly if necessary
-      if (jump > 0){ // check right side of player
+           
+      // check if we're jumping, do not allow double jump
+      if (jump > 0 && jumpValue==0){ 
          playerY = playerY - jump;
-         floorHeight = f.floorBase - height - f.getFloorHeight(floorChange,playerX);
-      }
-      else {// check left side of player
-         floorHeight = f.floorBase - height - f.getFloorHeight(floorChange,playerX);
+         jumpValue = jump;
       }
 
-      if (playerY < floorHeight){
+      // bring player back to floor level slowly if necessary     
+      floorHeight = f.floorBase - height - f.getFloorHeight(floorChange,playerX);
+
+      if (playerY < floorHeight){ 
          playerY += (gravity*gravity);
+         jumpValue -= (gravity*gravity);
          hit = false;
       }
-      armY = playerY + 26;
+      else {
+         jumpValue = 0;
+      }
+      armY = playerY + 26; // reset arm
 
       // check collision with floor
       if (playerY > floorHeight + 2 && hit != true){
-         health = health - 100;
+         health = health - floorDamage;
          hit = true;
       }      
       
       jeffy.render(g2d,playerX,playerY);
       jeffyArm.render(g2d,armX,armY);
+      
+      return jumpValue;
 
-   }
-
-   public int getPlayerHeight()
-   {
-      return 20 - (int)((playerY + height) /32);
-   }
-  
+   } 
 
 }
 

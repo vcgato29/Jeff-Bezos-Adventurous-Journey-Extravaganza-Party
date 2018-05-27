@@ -37,54 +37,54 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.GridLayout;
 
-
-
 public class Screens extends Canvas implements Runnable, MouseListener, KeyListener {
    
-   public static final String TITLE = "JEff";
-   public static final int WIDTH = 1280;
-   public static final int HEIGHT = 960;
-   public int floorChange = 0;
+   private static final String TITLE = "JEff";
+   private static final int WIDTH = 1280;
+   private static final int HEIGHT = 960;
    public static int screenChoice;
-   public static JFrame frame;
-   public JPanel PlayPanel;
-   public JPanel InstructionPanel;
+   private static JFrame frame;
+   private JPanel PlayPanel;
+   private JPanel InstructionPanel;
+   private BufferStrategy bs;
+   private Graphics g;
+   private Graphics2D g2d;
    private Texture texture;
    private Texture background;
-   public static Screens INSTANCE; 
-   public int playerX;
-   public int playerY;
-   public int armX;
-   public int armY;
-   public Texture jeffy;
-   public Texture jeffyArm;
-   public int x = 0;
-   public int y;
-   public int gravity = 2;
-   public int jumpHeight = 0;
-   public int mouseX= MouseInfo.getPointerInfo().getLocation().x;
-   public int mouseY= MouseInfo.getPointerInfo().getLocation().y;
-   public boolean shoot = false;
-   public int speed = 30;
-   public int count = 0;
-   public Player jeff;
-   public int floorBase = 600;
-   public int brickWidth = 32;
-   public int brickHeight = 32;
-   public int mapLength = 3200;
-   public int stepSize = 4;
-   public int enemyCount = 3;
-   public int [] floorMap = new int[mapLength/stepSize];
-      
-   public BufferStrategy bs;
-   public Graphics g;
-   public Graphics2D g2d;
-   public Floor f;
-   public Shoot shooter;
-      
-   public Enemy [] enemies = new Enemy[enemyCount];
-   
+   private static Screens INSTANCE; 
+   private int mouseX= MouseInfo.getPointerInfo().getLocation().x;
+   private int mouseY= MouseInfo.getPointerInfo().getLocation().y;
+
+   // configuration variables
+   private int gravity = 2;
+   private int maxJumpHeight = 150;
+   private int playerPosition = 93;
+   private int floorBase = 600;
+   private int floorDamage = 100; // damage caused by hitting floor
+   private int mapLength = 3200;
+   private int stepSize = 4;
+   private int enemyCount = 3;
+
+   // local variables
+   private int brickWidth = 32;
+   private int brickHeight = 32;
+   private boolean shoot = false;
+   private int x = 0;
+   private int y;
+   private int count = 0;
+   private int jumpHeight = 0;
+   private int floorChange = 0;
+   private int bulletX = 0;
+   private int bulletY = 0;
    private boolean running;
+
+   // objects
+   private int [] floorMap = new int[mapLength/stepSize];     
+   private Floor f;
+   private Shoot shooter;     
+   private Player jeff;
+   private Enemy [] enemies = new Enemy[enemyCount];
+   
 
          
    private void start(){
@@ -107,7 +107,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
 
    }
 
-   public void createScene(){
+   private void createScene(){
    
       bs = getBufferStrategy();
       if (bs == null) {
@@ -119,21 +119,21 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       g2d.translate(-6, -28);
 
       f = new Floor(0, mapLength, stepSize, floorBase, floorMap, g2d);
-      floorMap = createMap(floorMap,brickWidth, stepSize,20,50,1);
-      floorMap = createMap(floorMap,brickWidth, stepSize,35,45,2);
-      floorMap = createMap(floorMap,brickWidth, stepSize,80,100,1);
+      floorMap = createMap(floorMap,brickWidth,stepSize,20,50,1); //blocks from 20 to 50 level 1
+      floorMap = createMap(floorMap,brickWidth,stepSize,35,45,2);
+      floorMap = createMap(floorMap,brickWidth,stepSize,80,100,1);
       f.floorMap = floorMap;
       
       shooter = new Shoot(g2d);
-      jeff = new Player(93, floorBase, f, g2d);
+      jeff = new Player(playerPosition, floorBase, f, g2d);
       
-      enemies[0] = new Enemy(f,jeff,1000,1,1,"apple logo goomba static",g2d);      
-      enemies[1] = new Enemy(f,jeff,1500,2,3,"apple logo goomba static",g2d);
-      enemies[2] = new Enemy(f,jeff,2500,1,3,"apple logo goomba static",g2d);
+      enemies[0] = new Enemy(f,jeff,400,0,1,"apple logo goomba static",g2d); //enemy at 400 pixels
+      enemies[1] = new Enemy(f,jeff,1200,1,3,"apple logo goomba static",g2d);
+      enemies[2] = new Enemy(f,jeff,2500,0,3,"apple logo goomba static",g2d);
 
    }      
    
-   public int[] createMap(int[] fM, int width, int stepValue, int start, int end, int height)
+   private int[] createMap(int[] fM, int width, int stepValue, int start, int end, int height)
    {
       for(int i = start; i < end; i++)
       {
@@ -143,7 +143,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    }
 
    
-   public void render(BufferStrategy bs, Graphics g, Graphics2D g2d) {
+   private void render(BufferStrategy bs, Graphics g, Graphics2D g2d) {
       
       ///////////////////////////
       
@@ -155,40 +155,49 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       background.render(g2d,0,0);
       texture.render(g2d,mouseX-125,mouseY-25);
 
-      // create floors
-      //f = new Floor(floorChange, g2d);
+      // move floor
       f.move(floorChange, g2d);
-      //f.upLevel(floorChange, 0, mapLength/brickWidth,0,floorMap,g2d); // base level
-      //f.upLevel(floorChange, 640,40,1,floorMap,g2d);
-      //f.upLevel(floorChange, 960,10,2,floorMap,g2d);
-      //f.upLevel(floorChange, 1500,10,1,floorMap,g2d);
       
       // move enemies
       for (int i=0;i<enemyCount;i++){
          enemies[i].move(floorChange, stepSize, g2d);
       }
       
-      // move player
-      jeff.move(jumpHeight, gravity, floorChange, g2d);
-      jumpHeight = 0;
-      
-      if (f.getFloorHeight(floorChange, jeff.playerX)<0 || jeff.health==0)
-         running = false;
-   
+      // move player, store jump height to avoid double jumps
+      jumpHeight = jeff.move(jumpHeight, gravity, floorChange, floorDamage, g2d);
+        
+      // check if shooting
       if (shoot) {
-         count++;
-         shooter.fire(mouseX-115,mouseY-25,g2d);
-         shooter.bullet.render(g2d,shooter.x+speed,shooter.y);
-         speed += 30;
-         if (count > 42) {
-            count = 0;
-            speed = 30;
+         bulletX = shooter.fire(bulletX,bulletY,WIDTH,f,floorChange,g2d);
+         if (bulletX == -1){ // bullet left screen or hit wall
             shoot = false;
          }
+         else { // check if we're hitting an enemy
+            for (int i=0;i<enemyCount;i++){
+               if (enemies[i].isAlive==true){
+                  if (enemies[i].checkHit(shooter))
+                  {
+                     //System.out.println("Kill " + i);   
+                     enemies[i].kill();
+                     shoot = false;
+                  }
+               }
+            }
+         }
       }
-         
+      else {
+         bulletX = mouseX -115; // behind the gun
+         bulletY = mouseY - 25;
+      }
+
+      // check if game is over
+      if (f.getFloorHeight(floorChange, jeff.playerX)<0 || jeff.health==0)
+         running = false;
+
+      // move the floor
       floorChange -= stepSize;
    
+      // show health
       if (screenChoice == 1)
          {
             int maxHP = 300;
@@ -197,10 +206,6 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
             g.setColor(Color.GREEN);
             g.fillRect(0,0,newX,48);
          }
-   
-     
-      
-      // stuff to draw for game //
       
       bs.show();
    }
@@ -370,7 +375,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    public void keyPressed(KeyEvent e) {
       if(jumpHeight == 0) {
          if (e.getKeyCode() == KeyEvent.VK_SPACE){
-            jumpHeight = 98;
+            jumpHeight = maxJumpHeight;
          }
       }
    }

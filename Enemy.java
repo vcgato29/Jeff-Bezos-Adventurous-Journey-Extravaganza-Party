@@ -12,7 +12,7 @@ public class Enemy
    private int height;
    public int enemyY;
    public int enemyType;
-   boolean isAlive;
+   public boolean isAlive = true;
    public int enemySpeed;
    private Floor f;
    private Player p;
@@ -61,21 +61,55 @@ public class Enemy
    
    public void move(int floorChange, int stepSize, Graphics2D g2d)
    {
-      enemyX = enemyX - stepSize - enemySpeed;
-      if (enemyX >=0) {
-         enemyY = f.floorBase - f.getFloorHeight(floorChange, enemyX) - height ;
-         image.render(g2d, enemyX, enemyY);
-         
-         // check player collision
-         if (p.playerX + p.width > enemyX && p.playerX < enemyX + width && p.playerY + p.height >= enemyY && hit != true){
-            //System.out.println(p.width + "-" + width); 
-            p.health = p.health - 100;
-            hit = true;
+      if (isAlive==true){
+         if (backwards==false)
+            enemyX = enemyX - stepSize - enemySpeed;
+         else
+            enemyX = enemyX + stepSize + enemySpeed;
+   
+         if (enemyX >=0) { // check only when in play
+            enemyY = f.floorBase - f.getFloorHeight(floorChange, enemyX-width) - height ;
+            image.render(g2d, enemyX, enemyY);
+            
+            // check player collision
+            if (p.playerX + p.width > enemyX && p.playerX < enemyX + width && p.playerY + p.height >= enemyY && hit != true){
+               p.health = p.health - damage;
+               hit = true;
+            }
          }
       }
    }
    
-   public void turnAround(Enemy e, int floorChange, Graphics2D g2d)
+   public void kill()
    {
+      isAlive=false;
+      System.out.println("Killed");
+   }
+   
+   public boolean checkHit(Shoot shooter)
+   {
+      if (shooter.bulletX - shooter.bulletSpeed <= enemyX + width && shooter.bulletY >= enemyY && shooter.bulletY <= enemyY + height)
+      { // there is a chance for a hit
+//         if (shooter.bulletX > enemyX && shooter.bulletX < enemyX + width && )
+  //       {
+            health = health - 100;
+  //          System.out.println("Hit");
+    //     }
+      }
+//      else
+//         System.out.println("Miss: bspeed=" + shooter.bulletSpeed + ";bx=" + shooter.bulletX + ";lem=" + enemyX + ";rem=" + (int)(enemyX + width) + ";by=" + shooter.bulletY + "tem=" + enemyY + ";bem=" + (int)(enemyY + height));
+      if (health <= 0)
+         return true;
+      else
+         return false;
+         
+   }
+   
+   public void turnAround()
+   {
+      if (backwards==false)
+         backwards = true;
+      else
+         backwards = false;
    }
 }
