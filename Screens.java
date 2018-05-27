@@ -128,8 +128,8 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       jeff = new Player(playerPosition, floorBase, f, g2d);
       
       enemies[0] = new Enemy(f,jeff,400,0,1,"apple logo goomba static",g2d); //enemy at 400 pixels
-      enemies[1] = new Enemy(f,jeff,1200,1,3,"apple logo goomba static",g2d);
-      enemies[2] = new Enemy(f,jeff,2500,0,3,"apple logo goomba static",g2d);
+      enemies[1] = new Enemy(f,jeff,1600,1,3,"apple logo goomba static",g2d);
+      enemies[2] = new Enemy(f,jeff,2500,1,3,"apple logo goomba static",g2d);
 
    }      
    
@@ -191,8 +191,12 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       }
 
       // check if game is over
-      if (f.getFloorHeight(floorChange, jeff.playerX)<0 || jeff.health==0)
+      if (f.getFloorHeight(floorChange, jeff.playerX)<0 || jeff.health<=0){
          running = false;
+         if (jeff.health<=0){
+            System.out.println("You died");
+         }
+      }
 
       // move the floor
       floorChange -= stepSize;
