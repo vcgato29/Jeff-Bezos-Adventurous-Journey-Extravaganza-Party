@@ -42,7 +42,7 @@ public class Player
       }
 
       // bring player back to floor level slowly if necessary     
-      floorHeight = f.floorBase - height - f.getFloorHeight(floorChange,playerX);
+      floorHeight = f.getFloorHeight(floorChange,playerX) - height;
 
       if (playerY < floorHeight){ 
          playerY += (gravity*gravity);

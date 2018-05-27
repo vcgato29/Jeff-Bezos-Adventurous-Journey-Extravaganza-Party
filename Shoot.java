@@ -22,7 +22,7 @@ public class Shoot {
    
       bulletX = inX + bulletSpeed;
       bulletY = inY;
-      floorHeight = f.floorBase - f.getFloorHeight(0, bulletX);
+      floorHeight = f.getFloorHeight(0, bulletX);
       count++;
       bullet.render(g2d,bulletX,bulletY);
       bulletSpeed += 30;

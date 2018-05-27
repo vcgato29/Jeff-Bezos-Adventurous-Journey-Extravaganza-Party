@@ -87,14 +87,14 @@ public class Floor
       new Floor(floorChange, mapLength,stepValue, floorBase, floorMap, g2d);   
    }
         
-   // get the height of the floor at pixel pX given floorChange
+   // get the height of the floor in pixels at pixel pX given floorChange
    public int getFloorHeight(int floorChange, int pX)
    {  
-      int startX= ((pX+width)+Math.abs(floorChange))/32;
+      int startX = ((pX+width)+Math.abs(floorChange))/32;
 //      System.out.println(startX + "-" + pX + "-" + floorChange);
       try{
 //      System.out.println("height=" + floorMap[startX]*height);
-         return floorMap[startX]*height;
+         return floorBase - floorMap[startX]*height;
       }
       catch (Exception e) {
          return -1;

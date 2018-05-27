@@ -28,7 +28,7 @@ public class Enemy
       width = image.getWidth();
       height = image.getHeight();
       enemyX = eX;
-      enemyY = f.floorBase - f.getFloorHeight(0, enemyX) - height;
+      enemyY = f.getFloorHeight(0, enemyX) - height;
       enemySpeed = eSpeed;
       enemyType = type;
       if	(enemyType	==	1)
@@ -68,7 +68,7 @@ public class Enemy
             enemyX = enemyX + stepSize + enemySpeed;
    
          if (enemyX >=0) { // check only when in play
-            enemyY = f.floorBase - f.getFloorHeight(floorChange, enemyX-width) - height ;
+            enemyY = f.getFloorHeight(floorChange, enemyX-width) - height ;
             image.render(g2d, enemyX, enemyY);
             
             // check player collision
