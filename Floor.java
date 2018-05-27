@@ -43,45 +43,61 @@ public class Floor
    public int width = 32;
    public int height = 32;
    public int brickNum;
-   private int startX;
+   public int mapLength;
+   public int floorBase;
+   public int[] floorMap;
+   private int stepValue;
    public int y;
    public int countUps;
    public int upStart;
    public int yNewFloor;
-
-   
-   public Floor(int sX, int sY, int bN, Graphics2D g2d)
-   {
-      brickNum = bN;
-      startX = sX;
-      y = sY;
-      startBrick = new Texture("BRICK1 w_spikes");
-      startBrick.render(g2d,startX,y);
-
-      for(int i = 0; i <= brickNum; i++)
-      {
-         startX += width;
-         brick = new Texture("BRICK1");
-         brick.render(g2d,startX,y);
+         
+   public Floor(int floorChange, int mL, int sValue, int fB, int[] fM, Graphics2D g2d)
+   {    
+      int level;
+      int prevLevel = -1;
+      int blockX;
+      stepValue = sValue;
+      floorMap = fM;
+      floorBase = fB;
+      mapLength = mL;
+      brickNum = mapLength/width;
+      for(int i = 0; i < floorMap.length; i++)
+      {        
+         level = floorMap[i];
+         blockX = floorChange + i*32;
+         for (int j=0; j < level;j++){
+            brick = new Texture("BRICK1");
+            brick.render(g2d,blockX,floorBase - j*height);
+         }
+         if (level > prevLevel){
+            brick = new Texture("BRICK1 w_spikes");
+            brick.render(g2d,blockX,floorBase - level*height);
+         }
+         else {
+            brick = new Texture("BRICK1");
+            brick.render(g2d,blockX,floorBase - level*height);
+         }
+         prevLevel = level;            
       }
    }
    
-   public int[] upLevel(int floorChange, int floorStart, int upLength, int cU, int[] fT, Graphics2D g2d)
+   public void move(int floorChange, Graphics2D g2d)
    {
-      countUps = cU;
-      upStart = floorChange + floorStart;
-      yNewFloor = y;
-      yNewFloor -= (countUps * 32);
-      new Floor(upStart, yNewFloor, upLength, g2d);
-      for(int i = floorStart/4; i < ((floorStart + (upLength*32))/4); i++)
-      {
-         fT[i] = countUps;
-      }
-      return fT;
+      new Floor(floorChange, mapLength,stepValue, floorBase, floorMap, g2d);   
    }
-   
+        
+   // get the height of the floor at pixel pX given floorChange
    public int getFloorHeight(int floorChange, int pX)
    {  
-      return (Math.abs(floorChange)+(pX))/4;
+      int startX= ((pX+width)+Math.abs(floorChange))/32;
+//      System.out.println(startX + "-" + pX + "-" + floorChange);
+      try{
+//      System.out.println("height=" + floorMap[startX]*height);
+         return floorMap[startX]*height;
+      }
+      catch (Exception e) {
+         return -1;
+      }
    }
 } 

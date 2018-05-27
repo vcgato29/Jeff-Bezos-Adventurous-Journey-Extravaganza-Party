@@ -2,98 +2,80 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferStrategy;
-import javax.swing.*;
-import java.util.*;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import java.awt.FlowLayout;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import java.awt.event.*;
-import java.awt.MouseInfo;
-import java.awt.image.BufferStrategy;
-import java.awt.image.*;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.lang.Object;
-import java.awt.FlowLayout;
-import java.awt.event.*;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.GridLayout;
-
 
 public class Enemy
 {
    public int health; 
    public int damage; 
    public int enemyX;
+   private int width;
+   private int height;
    public int enemyY;
-   public int type;
+   public int enemyType;
    boolean isAlive;
    public int enemySpeed;
-   public Texture appleGoomba = new Texture("apple logo goomba static");
-   public int count = 0;
+   private Floor f;
+   private Player p;
+   private boolean hit = false;
+   public Texture image;   
    public boolean backwards = false;
-   public int startLevel;
 
-   public Enemy (int floorC, int eX, int eLevel, int eSpeed, int type, int count, Graphics2D g2d)	
+   public Enemy (Floor eF, Player eP, int eX, int eSpeed, int type, String sImage, Graphics2D g2d)	
    {
-      startLevel = eLevel;
-      enemyY = 600 - startLevel * 32;
+      f = eF;
+      p = eP;
+      image = new Texture(sImage);
+      width = image.getWidth();
+      height = image.getHeight();
+      enemyX = eX;
+      enemyY = f.floorBase - f.getFloorHeight(0, enemyX) - height;
       enemySpeed = eSpeed;
-      type = type;
-      floorC += (enemySpeed * count);
-      enemyX = eX + floorC;
-      if	(type	==	1)
+      enemyType = type;
+      if	(enemyType	==	1)
       {
          health =	100;
          damage =	50;
       }
-      else if(type == 2)
+      else if(enemyType == 2)
       {
          health =	150;
          damage =	50;
       }
-      else if (type == 3)
+      else if (enemyType == 3)
       {
          health =	200;
          damage =	50;
       }
-      else if (type == 4)
+      else if (enemyType == 4)
       {
          health =	250;
          damage =	100;
       }
-      else if (type == 5)
+      else if (enemyType == 5)
       {
          health =	300;
          damage =	100;
       }
-      appleGoomba.render(g2d, enemyX, enemyY);
-      count++;
+      image.render(g2d, enemyX, enemyY);
    }
    
-   public void turnAround(Enemy e, int floorChange, int[] floorTracker, Floor f, Graphics2D g2d)
+   public void move(int floorChange, int stepSize, Graphics2D g2d)
    {
-      if (floorTracker[f.getFloorHeight(floorChange, e.enemyX)] != e.startLevel - 1)
-      {
-         backwards=true;
-         e.enemySpeed *= -1;
+      enemyX = enemyX - stepSize - enemySpeed;
+      if (enemyX >=0) {
+         enemyY = f.floorBase - f.getFloorHeight(floorChange, enemyX) - height ;
+         image.render(g2d, enemyX, enemyY);
+         
+         // check player collision
+         if (p.playerX + p.width > enemyX && p.playerX < enemyX + width && p.playerY + p.height >= enemyY && hit != true){
+            //System.out.println(p.width + "-" + width); 
+            p.health = p.health - 100;
+            hit = true;
+         }
       }
+   }
+   
+   public void turnAround(Enemy e, int floorChange, Graphics2D g2d)
+   {
    }
 }

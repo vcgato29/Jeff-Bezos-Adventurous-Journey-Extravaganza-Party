@@ -61,28 +61,32 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    public int x = 0;
    public int y;
    public int gravity = 2;
-   public int yvel = 0;
-   public int gravMag = 0;
+   public int jumpHeight = 0;
    public int mouseX= MouseInfo.getPointerInfo().getLocation().x;
    public int mouseY= MouseInfo.getPointerInfo().getLocation().y;
    public boolean shoot = false;
    public int speed = 30;
    public int count = 0;
-   public Player jeff = new Player();
+   public Player jeff;
+   public int floorBase = 600;
+   public int brickWidth = 32;
+   public int brickHeight = 32;
    public int mapLength = 3200;
    public int stepSize = 4;
-   public int[] floorTracker = new int[mapLength/stepSize];
-   public int enemyCount = 0;
-
-
-
-   
-   
+   public int enemyCount = 3;
+   public int [] floorMap = new int[mapLength/stepSize];
+      
+   public BufferStrategy bs;
+   public Graphics g;
+   public Graphics2D g2d;
+   public Floor f;
+   public Shoot shooter;
+      
+   public Enemy [] enemies = new Enemy[enemyCount];
    
    private boolean running;
 
-      
-   
+         
    private void start(){
       if(running) 
          return;
@@ -96,59 +100,80 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       
       texture = new Texture("sniper blue");
       background = new Texture("background");
-      jeff.jeffy = new Texture("bezos");
-      jeff.jeffyArm = new Texture("bezosarm");
-      jeff.x = 93;
-      jeff.y = 480;
-      for(int i = 0; i < floorTracker.length; i++)
+      for(int i = 0; i < floorMap.length; i++)
       {
-         floorTracker[i] = 0;
+         floorMap[i] = 0;
       }
-   
+
    }
 
-         
+   public void createScene(){
    
-   public void render() {
-      BufferStrategy bs = getBufferStrategy();
+      bs = getBufferStrategy();
       if (bs == null) {
-         createBufferStrategy(3);
-         return;
+           createBufferStrategy(3);
+            bs = getBufferStrategy();
       }
-      Graphics g = bs.getDrawGraphics();
-      Graphics2D g2d = (Graphics2D) g;
-      
+      g = bs.getDrawGraphics();
+      g2d = (Graphics2D) g;
       g2d.translate(-6, -28);
-      ///////////////////////////
-      Shoot shooter = new Shoot(g2d);
+
+      f = new Floor(0, mapLength, stepSize, floorBase, floorMap, g2d);
+      floorMap = createMap(floorMap,brickWidth, stepSize,20,50,1);
+      floorMap = createMap(floorMap,brickWidth, stepSize,35,45,2);
+      floorMap = createMap(floorMap,brickWidth, stepSize,80,100,1);
+      f.floorMap = floorMap;
       
-      jeff.armX = jeff.x + 45;
-      jeff.armY = jeff.y + 26;
-      mouseX= MouseInfo.getPointerInfo().getLocation().x;
-      mouseY= MouseInfo.getPointerInfo().getLocation().y; 
+      shooter = new Shoot(g2d);
+      jeff = new Player(93, floorBase, f, g2d);
+      
+      enemies[0] = new Enemy(f,jeff,1000,1,1,"apple logo goomba static",g2d);      
+      enemies[1] = new Enemy(f,jeff,1500,2,3,"apple logo goomba static",g2d);
+      enemies[2] = new Enemy(f,jeff,2500,1,3,"apple logo goomba static",g2d);
+
+   }      
+   
+   public int[] createMap(int[] fM, int width, int stepValue, int start, int end, int height)
+   {
+      for(int i = start; i < end; i++)
+      {
+         fM[i] = height;
+      }
+      return fM;
+   }
+
+   
+   public void render(BufferStrategy bs, Graphics g, Graphics2D g2d) {
+      
+      ///////////////////////////
+      
+      mouseX= MouseInfo.getPointerInfo().getLocation().x - frame.getLocation().x;
+      mouseY= MouseInfo.getPointerInfo().getLocation().y - frame.getLocation().y; 
+
       g2d.setColor(Color.RED);
       g2d.fillRect(0,0,WIDTH,HEIGHT);
       background.render(g2d,0,0);
       texture.render(g2d,mouseX-125,mouseY-25);
-      Floor f = new Floor(floorChange, 600, 100,g2d);
-      f.upLevel(floorChange, 600,20,1,floorTracker,g2d);
-      f.upLevel(floorChange, 700,10,2,floorTracker,g2d);
-      f.upLevel(floorChange, 1500,10,1,floorTracker,g2d);
-      if (jeff.y < 528-((floorTracker[f.getFloorHeight(floorChange,jeff.x)])*32))
-         jeff.y += (gravity*gravity); 
-     
-     
-      if (yvel > 0) {
-         gravMag -= (gravity*gravity);
-         yvel = yvel + gravMag;
+
+      // create floors
+      //f = new Floor(floorChange, g2d);
+      f.move(floorChange, g2d);
+      //f.upLevel(floorChange, 0, mapLength/brickWidth,0,floorMap,g2d); // base level
+      //f.upLevel(floorChange, 640,40,1,floorMap,g2d);
+      //f.upLevel(floorChange, 960,10,2,floorMap,g2d);
+      //f.upLevel(floorChange, 1500,10,1,floorMap,g2d);
+      
+      // move enemies
+      for (int i=0;i<enemyCount;i++){
+         enemies[i].move(floorChange, stepSize, g2d);
       }
       
+      // move player
+      jeff.move(jumpHeight, gravity, floorChange, g2d);
+      jumpHeight = 0;
       
-      if (jeff.y < 528-((floorTracker[f.getFloorHeight(floorChange,jeff.x)])*32)) {
-         gravMag = 0;
-         yvel=0;
-      }
-      jeff.y = jeff.y-yvel;
+      if (f.getFloorHeight(floorChange, jeff.playerX)<0 || jeff.health==0)
+         running = false;
    
       if (shoot) {
          count++;
@@ -162,27 +187,13 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          }
       }
          
+      floorChange -= stepSize;
    
-      jeff.jeffy.render(g2d,jeff.x,jeff.y);
-   
-      jeff.jeffyArm.render(g2d,jeff.armX,jeff.armY);
-      jeff.checkCollision(floorChange,floorTracker,f);
-      
-      Enemy goomb1 = new Enemy(floorChange,750,3,0,1,enemyCount,g2d);
-      goomb1.turnAround(goomb1,floorChange,floorTracker,f,g2d);
-      System.out.println(floorTracker[f.getFloorHeight(floorChange, goomb1.enemyX)]);
-      System.out.println(jeff.getPlayerHeight());
-      enemyCount++;
-   
-      floorChange -= 4;
-      //System.out.println((Math.abs(floorChange)+(playerX+47))/4 + "-" + floorTracker[(Math.abs(floorChange)+(playerX+47))/4] + ":" + floorTracker[f.getFloorHeight(floorChange,playerX)]);
-   
-           if (screenChoice == 1)
+      if (screenChoice == 1)
          {
             int maxHP = 300;
-            g.drawRect(0,0,300,48);
-            int ratio = jeff.health/maxHP;
-            int newX = ratio * 256;
+            g.drawRect(0,0,maxHP,48);
+            int newX = jeff.health;
             g.setColor(Color.GREEN);
             g.fillRect(0,0,newX,48);
          }
@@ -191,8 +202,6 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       
       // stuff to draw for game //
       
-      g.dispose();
-      g2d.dispose();
       bs.show();
    }
    
@@ -214,8 +223,8 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       int tps = 0;
       boolean canRender = false;
    
-   
-      
+      createScene();
+         
       while(running) {
          long now = System.nanoTime();
          unprocessed += (now - lastTime) / nsPerTick;
@@ -227,7 +236,9 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
             tps++;
             canRender = true;
          } 
-         else canRender = false;
+         else {
+            canRender = false;
+         }
          
          try {
             Thread.sleep(1);
@@ -237,7 +248,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          }
          
          if(canRender) {
-            render();
+            render(bs, g, g2d);
             
             fps++;
             
@@ -245,12 +256,16 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          
          if(System.currentTimeMillis() - 1000 > timer) {
             timer += 1000;
-            System.out.printf("FPS: %d | TPS: %d\n",fps,tps);
+            //System.out.printf("FPS: %d | TPS: %d\n",fps,tps);
             fps = 0;
             tps = 0;
          }
       
-      }  
+      }
+      System.out.println("Level Finished");
+  
+      g.dispose();
+      g2d.dispose();
       System.exit(0);
    }
 
@@ -353,9 +368,9 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
 
 
    public void keyPressed(KeyEvent e) {
-      if(yvel == 0) {
+      if(jumpHeight == 0) {
          if (e.getKeyCode() == KeyEvent.VK_SPACE){
-            yvel = 98;
+            jumpHeight = 98;
          }
       }
    }
