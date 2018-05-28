@@ -62,6 +62,7 @@ public class Floor
       floorBase = fB;
       mapLength = mL;
       brickNum = mapLength/width;
+      // loop to render blocks of specified dimensions 
       for(int i = 0; i < floorMap.length; i++)
       {        
          level = floorMap[i];

@@ -92,7 +92,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    private Player jeff;
    private Enemy [] enemies = new Enemy[maxEnemyCount];
    
-         
+   // called to start thread th      
    private void start(){
       if(running) 
          return;
@@ -139,6 +139,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       level.createEnemy(f, 2500,1,3,jeff,"apple logo goomba static", g2d);
       levels[nrLevels] = level;
       nrLevels++;
+
            
       // second level
       level = new Level(nrLevels, mapLength, stepSize,  maxEnemyCount);
@@ -148,11 +149,32 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       level.createMap(80,190,1);
       level.createMap(120,170,2);     
       level.createEnemy(f, 1200,1,2,jeff,"apple logo goomba static", g2d);
-      level.createEnemy(f, 1600,2,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f, 1600,2,3,jeff,"apple logo goomba static", g2d);
       level.createEnemy(f, 2500,1,4,jeff,"apple logo goomba static", g2d);
       levels[nrLevels] = level;
-      nrLevels++;      
-
+      nrLevels++;
+      
+      // third level
+      level = new Level(nrLevels, mapLength, stepSize, maxEnemyCount);
+      level.createMap(50,150,1);
+      level.createMap(75,125,2);
+      level.createMap(90,115,3);
+      level.createEnemy(f, 2560,3,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f, 1600,1,5,jeff,"apple logo goomba static", g2d);
+      levels[nrLevels] = level;
+      nrLevels++;
+      
+      // fourth level
+      level = new Level(nrLevels, mapLength, stepSize, maxEnemyCount);
+      level.createMap(50,175,1);
+      level.createMap(53,150,2);
+      level.createMap(56,125,3);
+      level.createMap(58,100,4);
+      levels[nrLevels] = level;
+      nrLevels++;
+      
+      // fifth level
+      
       System.out.println("Create " + nrLevels + " levels");
 
    }      

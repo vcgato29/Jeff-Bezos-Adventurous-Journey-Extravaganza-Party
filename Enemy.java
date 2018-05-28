@@ -123,7 +123,7 @@ public class Enemy
       }
          
    }
-   
+   // makes the enemy turn around
    public void turnAround()
    {
       if (backwards==false)

@@ -55,6 +55,7 @@ public class Player
       armY = playerY + 26; // reset arm
 
       // check collision with floor
+      
       if (playerY + height > floorHeight + 2 && hit != true){
          health = health - floorDamage;
          System.out.println("You hit floor: health=" + health);
