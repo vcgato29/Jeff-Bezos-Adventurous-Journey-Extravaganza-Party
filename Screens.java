@@ -82,6 +82,8 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    private int bulletY = 0;
    private boolean running;
    private boolean alive = true;
+   private double score;
+   private double startTime;
 
    // objects
    private Level [] levels = new Level[maxNrLevels];
@@ -100,6 +102,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       new Thread(this, "JeffsMainThread").start();
       addKeyListener(this);
       addMouseListener(this);
+      startTime = System.nanoTime()/1000000000;
    }
    
    public Screens() {
@@ -127,6 +130,9 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       f = new Floor(0, mapLength, stepSize, floorBase, floorMap, g2d);
       shooter = new Shoot(g2d);
       jeff = new Player(playerPosition, floorBase, f, g2d);
+      
+      // draw score
+     
       
       // create levels
       // first level
@@ -170,10 +176,32 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       level.createMap(53,150,2);
       level.createMap(56,125,3);
       level.createMap(58,100,4);
+      level.createEnemy(f,1000,3,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f,1700,4,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f,2400,4,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f,3000,4,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f,3600,4,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f,4300,4,5,jeff,"apple logo goomba static", g2d);
       levels[nrLevels] = level;
       nrLevels++;
       
       // fifth level
+      level = new Level(nrLevels, mapLength, stepSize, maxEnemyCount);
+      level.createMap(25,75,1);
+      level.createMap(100,150,1);
+      level.createEnemy(f,500,1,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f,700,1,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f,900,1,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f,1100,1,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f,1300,1,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f,1500,1,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f,1700,1,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f,1900,1,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f,2100,1,5,jeff,"apple logo goomba static", g2d);
+      level.createEnemy(f,2200,1,5,jeff,"apple logo goomba static", g2d);
+      levels[nrLevels] = level;
+      nrLevels++;
+      
       
       System.out.println("Create " + nrLevels + " levels");
 
@@ -279,6 +307,8 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
             int newX = jeff.health;
             g.setColor(Color.GREEN);
             g.fillRect(0,0,newX,48);
+            g.drawString(""+(int)score,900,50);
+
          }
       
       bs.show();
@@ -332,7 +362,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
             
             if(canRender) {
                render(bs, g, g2d);
-               
+               score = (System.nanoTime()/1000000000 - startTime)/26*1000;
                fps++;
                
             }
