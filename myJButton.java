@@ -1,4 +1,4 @@
-import javax.swing.*;
+ import javax.swing.*;
 import java.util.*;
 import java.awt.*;
 import java.io.File;
@@ -56,6 +56,10 @@ public class myJButton extends JPanel implements ActionListener
       if(pressed.contains("Play"))
       {
          buttonScreen.changeScreen(1);
+      }
+      if(pressed.contains("Instructions"))
+      {
+         buttonScreen.changeScreen(2);
       }
    }
 }

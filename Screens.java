@@ -46,11 +46,13 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    private static JFrame frame;
    private JPanel PlayPanel;
    private JPanel InstructionPanel;
+   private JPanel Panel;
    private BufferStrategy bs;
    private Graphics g;
    private Graphics2D g2d;
    private Texture texture;
    private Texture background;
+   private Texture gameover;
    private static Screens INSTANCE; 
    private int mouseX= MouseInfo.getPointerInfo().getLocation().x;
    private int mouseY= MouseInfo.getPointerInfo().getLocation().y;
@@ -109,6 +111,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       
       texture = new Texture("sniper blue");
       background = new Texture("background");
+      gameover = new Texture("gameover");
       for(int i = 0; i < floorMap.length; i++)
       {
          floorMap[i] = 0;
@@ -293,6 +296,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          if (jeff.health<=0){
             System.out.println("You died");
             alive = false;
+            gameover.render(g2d,0,0);
          }
       }
 
@@ -384,7 +388,6 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       System.out.println("Game Over");
       g.dispose();
       g2d.dispose();
-      System.exit(0);
    }
 
       
@@ -474,6 +477,19 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       
       
       }
+      
+      if(screenChoice == 2)
+      {
+         System.out.println("fuck u tim");
+         Panel = new JPanel(new GridLayout(1,1));
+         Drawing draw = new Drawing();
+         myJButton MenuButton = new myJButton(140,290,500,140,Panel,"Main Menu",this);
+         frame.remove(PlayPanel);
+         frame.remove(InstructionPanel);
+         frame.add(Panel);
+         frame.add(draw);
+       }
+
    }
    public void keyTyped(KeyEvent e) {
    
@@ -543,6 +559,11 @@ class Drawing extends JComponent
             Font titleFont = new Font("Serif", Font.ITALIC, 50);
             g.setFont(titleFont);
             g.drawString("Jeff Bezos' Adventurous Journey Extravaganza Party",120,140);
+         }
+         if(Screens.screenChoice == 2)
+         {
+            BufferedImage imga = ImageIO.read(new File("images/Insturctions.png"));
+            g.drawImage(imga,0,0,null);
          }
       }   
       catch(IOException e) 
