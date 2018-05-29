@@ -244,6 +244,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    private void render(BufferStrategy bs, Graphics g, Graphics2D g2d) {
       
       ///////////////////////////
+      boolean endofLevel = false;
       
       mouseX= MouseInfo.getPointerInfo().getLocation().x - frame.getLocation().x;
       mouseY= MouseInfo.getPointerInfo().getLocation().y - frame.getLocation().y; 
@@ -263,6 +264,9 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       
       // move player, store jump height to avoid double jumps
       jumpHeight = jeff.move(jumpHeight, gravity, floorChange, floorDamage, g2d);
+      if (jumpHeight == -1){
+         endofLevel = true;
+      }
         
       // check if shooting
       if (shoot) {
@@ -291,15 +295,16 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       }
 
       // check if game is over
-      if (f.getFloorHeight(floorChange, jeff.playerX)<0 || jeff.health<=0){
-         running = false;
-         if (jeff.health<=0){
+      if (jeff.health <= 0){
             System.out.println("You died");
             alive = false;
+            running = false;
             gameover.render(g2d,0,0);
+      } else
+         if (endofLevel == true || f.getFloorHeight(floorChange, jeff.playerX)<0) {
+            running = false;
          }
-      }
-
+         
       // move the floor
       floorChange -= stepSize;
    

@@ -55,12 +55,15 @@ public class Player
       armY = playerY + 26; // reset arm
 
       // check collision with floor
-      
-      if (playerY + height > floorHeight + 2 && hit != true){
-         health = health - floorDamage;
-         System.out.println("You hit floor: health=" + health);
-         hit = true;
-      }      
+      if (playerX - floorChange + width > (f.mapLength * 8) - 10){
+         jumpValue = -1;
+      }
+      else 
+         if (playerY + height > floorHeight + 2 && hit != true){
+            health = health - floorDamage;
+            System.out.println("You hit floor: health=" + health + " : " + (int)(playerX - floorChange) + " : " + (int)(f.mapLength * 8));
+            hit = true;
+         }      
       
       jeffy.render(g2d,playerX,playerY);
       jeffyArm.render(g2d,armX,armY);
