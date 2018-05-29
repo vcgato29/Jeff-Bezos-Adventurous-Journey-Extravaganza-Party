@@ -446,8 +446,11 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    
    public void display()
    {
+      boolean changed = false;
       if(screenChoice == 0)
       {  
+         if (changed)
+            frame.remove(Panel);
          PlayPanel = new JPanel(new GridLayout(1,1));
          myJButton PlayButton = new myJButton(140,290,450,140,PlayPanel,"Play",this);
          InstructionPanel = new JPanel(new GridLayout(1,1));
@@ -456,6 +459,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          frame.add(InstructionPanel);
          frame.repaint();
          System.out.println("menu");
+         changed = false;
  
       }
       
@@ -494,6 +498,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          frame.add(draw);
          frame.repaint();
          frame.setVisible(true);
+         changed = true;
        }
 
    }
