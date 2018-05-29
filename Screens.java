@@ -43,7 +43,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    private static final int WIDTH = 1280;
    private static final int HEIGHT = 960;
    public static int screenChoice;
-   private JFrame frame;
+   private static JFrame frame;
    private JPanel PlayPanel;
    private JPanel InstructionPanel;
    private JPanel Panel;
@@ -86,8 +86,6 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    private boolean alive = true;
    private double score;
    private double startTime;
-   private myJButton MenuButton;
-   public boolean changed = false;
 
    // objects
    private Level [] levels = new Level[maxNrLevels];
@@ -448,18 +446,8 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
    
    public void display()
    {
-
       if(screenChoice == 0)
       {  
-         if(changed) {
-            Panel.remove(MenuButton);
-            frame.remove(Panel);
-            frame.validate();
-            frame.repaint();
-            }
-            
-         frame.invalidate();
-         frame.validate();
          PlayPanel = new JPanel(new GridLayout(1,1));
          myJButton PlayButton = new myJButton(140,290,450,140,PlayPanel,"Play",this);
          InstructionPanel = new JPanel(new GridLayout(1,1));
@@ -468,7 +456,6 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          frame.add(InstructionPanel);
          frame.repaint();
          System.out.println("menu");
-         changed = false;
  
       }
       
@@ -500,14 +487,13 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          System.out.println("Instructions");
          Panel = new JPanel(new GridLayout(1,1));
          Drawing draw = new Drawing();
-         MenuButton = new myJButton(140,290,500,140,Panel,"Menu",this);
+         myJButton MenuButton = new myJButton(140,290,500,140,Panel,"Main Menu",this);
          frame.remove(PlayPanel);
          frame.remove(InstructionPanel);
          frame.add(Panel);
          frame.add(draw);
          frame.repaint();
          frame.setVisible(true);
- 
        }
 
    }

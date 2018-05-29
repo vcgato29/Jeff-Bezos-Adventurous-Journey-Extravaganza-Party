@@ -47,7 +47,6 @@ public class myJButton extends JPanel implements ActionListener
       JButton b = new JButton(buttonName);
       buttonPanel.add(b);
       b.addActionListener(this);
-      
    }
    
    public void actionPerformed(ActionEvent e)
@@ -62,7 +61,7 @@ public class myJButton extends JPanel implements ActionListener
       {
          buttonScreen.changeScreen(2);
       }
-      if (pressed.contains("Menu"))
+      if (pressed.contains("Main Menu"))
       {
          buttonScreen.changeScreen(0);
       }
