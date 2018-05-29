@@ -455,7 +455,6 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          frame.add(PlayPanel);
          frame.add(InstructionPanel);
          frame.repaint();
-      //         new ButtonCreate(140,290,440,130,0,PlayPanel);
          System.out.println("menu");
  
       }
@@ -485,7 +484,7 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       
       if(screenChoice == 2)
       {
-         System.out.println("fuck u tim");
+         System.out.println("Instructions");
          Panel = new JPanel(new GridLayout(1,1));
          Drawing draw = new Drawing();
          myJButton MenuButton = new myJButton(140,290,500,140,Panel,"Main Menu",this);
@@ -493,6 +492,8 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
          frame.remove(InstructionPanel);
          frame.add(Panel);
          frame.add(draw);
+         frame.repaint();
+         frame.setVisible(true);
        }
 
    }
@@ -567,12 +568,13 @@ class Drawing extends JComponent
          }
          if(Screens.screenChoice == 2)
          {
-            BufferedImage imga = ImageIO.read(new File("images/Insturctions.png"));
+            BufferedImage imga = ImageIO.read(new File("images/Instructions.png"));
             g.drawImage(imga,0,0,null);
          }
       }   
       catch(IOException e) 
       {
+         System.out.println("Image Failure");
          System.exit(1);
       }
    } 

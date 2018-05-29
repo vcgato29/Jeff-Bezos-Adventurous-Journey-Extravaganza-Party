@@ -61,5 +61,9 @@ public class myJButton extends JPanel implements ActionListener
       {
          buttonScreen.changeScreen(2);
       }
+      if (pressed.contains("Main Menu"))
+      {
+         buttonScreen.changeScreen(0);
+      }
    }
 }
