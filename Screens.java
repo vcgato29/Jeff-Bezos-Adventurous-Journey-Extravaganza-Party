@@ -483,17 +483,21 @@ public class Screens extends Canvas implements Runnable, MouseListener, KeyListe
       }
       
       if(screenChoice == 2)
-      {
+      { 
+         JFrame Instframe = new JFrame("Instructions");
          System.out.println("Instructions");
-         Panel = new JPanel(new GridLayout(1,1));
          Drawing draw = new Drawing();
-         myJButton MenuButton = new myJButton(140,290,500,140,Panel,"Main Menu",this);
-         frame.remove(PlayPanel);
-         frame.remove(InstructionPanel);
-         frame.add(Panel);
-         frame.add(draw);
-         frame.repaint();
-         frame.setVisible(true);
+         Instframe.setSize(WIDTH,HEIGHT);
+         Instframe.add(draw);
+         Instframe.toFront();
+         Instframe.requestFocus();
+         Instframe.setLocationRelativeTo(null);
+         Instframe.repaint();
+         Instframe.setVisible(true);
+         Instframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+         Instframe.setResizable(false);
+         Instframe.setFocusable(true);
+
        }
 
    }
