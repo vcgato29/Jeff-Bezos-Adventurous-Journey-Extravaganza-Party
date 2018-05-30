@@ -37,6 +37,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.GridLayout;
 
+/*********************************************************
+*  Name: Tim van Maren, Mackenzie van Zanden, Sam Sherman*
+*  Course: ICS 4U  Pd. 4                                 *
+*  Assignment Summative                                  *
+*  Purpose: Mario style jump and shoot game              *
+*  Due Date: May 28, 2018                                *
+*********************************************************/
+
 public class Screens extends Canvas implements Runnable, MouseListener, KeyListener {
    
    private static final String TITLE = "JEff";
